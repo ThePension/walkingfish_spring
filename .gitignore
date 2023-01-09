@@ -3,6 +3,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Production properties ###
+*-prod.properties
+
 ### STS ###
 .apt_generated
 .classpath
