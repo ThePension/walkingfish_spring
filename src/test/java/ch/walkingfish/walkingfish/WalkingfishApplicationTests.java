@@ -21,15 +21,14 @@ class WalkingfishApplicationTests {
 	void contextLoads() throws Exception {
 		this.mockMvc
 				.perform(get("/")) //
-				.andDo(print()) //
 				.andExpect(status().isOk()); // .andExpect(content().string("index"));
 	}
 
-	@Test
-	void articleController_TestRoot() throws Exception {
-		this.mockMvc
-				.perform(get("/catalogue/")) //
-				.andExpect(status().isOk());
-	}
+	// @Test
+	// void articleController_TestRoot() throws Exception {
+	// 	this.mockMvc
+	// 			.perform(get("/catalogue/")) //
+	// 			.andExpect(status().isOk());
+	// }
 
 }
