@@ -1,0 +1,81 @@
+<div th:fragment="article-list">
+	<h1>Liste des article</h1>
+			
+    <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Type</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:each="article: ${articles}">
+                <td th:text="${article.name}" />
+                <td th:text="${article.price}" />
+                <td th:text="${article.description}" />
+                <td th:text="${article.type}" />
+                <!-- <td th:if="${isAdmin}">
+                    <form action="#" th:action="@{/admin/delete-beer}" th:object="${beer}" method="post">
+                        <input type="hidden" th:value="${beer.id}" name="id" />
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
+                    
+                </td>
+                <td th:if="${isAdmin}">
+                    <form action="#" th:action="@{/admin/edit-beer}" th:object="${beer}" method="post">
+                        <input type="hidden" th:value="${beer.id}" name="id" />
+                        <button type="submit" class="btn btn-warning">Modifier</button>
+                    </form>
+                </td> -->
+                <!-- <td th:if="${isPublic}">
+                    <form action="#" th:action="@{/evaluate}" method="post">
+                        <select name="note" style="width: 40px"> class="form-control" id="eval">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                        <input type="hidden" th:value="${beer.id}" name="beerId" />
+                        <button type="submit" class="btn btn-warning">Voter</button>
+                    </form>
+                </td> -->			    	
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<div th:fragment="new-article">
+	<h1>Insertion d'un article</h1>
+	
+	<form action="#" th:action="@{/catalogue/save}" th:object="${article}" method="post">
+	     
+	     <div class="form-group">   
+	     	<label for="name" th:text="Nom"></label>
+	        <input type="text"  class="form-control" th:required="required" th:field="*{name}" />
+	     </div>
+
+         <div class="form-group">   
+            <label for="name" th:text="Description"></label>
+           <input type="text"  class="form-control" th:required="required" th:field="*{description}" />
+        </div>
+	     
+	     <div class="form-group">   
+	     	<label for="price" th:text="Prix"></label>
+	        <input type="number" min="0" value="0" step="0.05" class="form-control" th:required="required" th:field="*{price}" />
+	     </div>
+	     
+	     <div class="form-group">   
+	     	<label for="type" th:text="Type"></label>
+	        <input type="text" class="form-control" th:required="required" th:field="*{type}" />
+	     </div>
+	     
+	    <button type="submit" class="btn btn-primary">Créer l'article</button>
+	</form>
+</div>

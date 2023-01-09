@@ -4,12 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-// @ComponentScan(basePackages="ch.walkingfish.walkingfish")
 public class WalkingfishApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
