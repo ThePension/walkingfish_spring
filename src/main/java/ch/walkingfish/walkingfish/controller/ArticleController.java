@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
@@ -49,7 +48,7 @@ public class ArticleController {
     public String saveBeer(@ModelAttribute Article article, BindingResult errors, Model model) {
         articleService.addBeerToCatalog(article);
 
-        return "redirect:/catalogue/";
+        return "redirect:/catalogue";
     }
 
     @GetMapping(value = "/edit/{id}")
@@ -59,7 +58,7 @@ public class ArticleController {
         try {
             articleToEdit = articleService.getArticleById((long)id);
         } catch (Exception e) {
-            return "redirect:/catalogue/";
+            return "redirect:/catalogue";
         }
 
 	    model.addAttribute("article", articleToEdit);
