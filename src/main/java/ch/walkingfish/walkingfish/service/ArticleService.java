@@ -2,6 +2,7 @@ package ch.walkingfish.walkingfish.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,34 @@ public class ArticleService {
 		return result;
 	}
 
-    public void addBeerToCatalog(Article article) {
-        articleRepository.save(article);
+    public Article addBeerToCatalog(Article article) {
+        return articleRepository.save(article);
     }
+
+	public Article getArticleById(Long id) throws Exception
+	{
+		Optional<Article> article = articleRepository.findById(id);
+
+		if (article.isPresent()) return article.get();
+
+		throw new Exception("This beer does not exist");
+	}
+
+	public Article updateArticleInDB(Article article)
+	{
+		// TODO : Fix this
+		articleRepository.delete(article);
+
+		return articleRepository.save(article);
+	}
+
+	public void deleteArticleInDB(Article article)
+	{
+		articleRepository.delete(article);
+	}
+
+	public void deleteArticleInDB(Long id)
+	{
+		articleRepository.deleteById(id);
+	}
 }

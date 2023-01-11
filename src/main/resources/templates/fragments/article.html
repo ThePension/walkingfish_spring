@@ -18,19 +18,18 @@
                 <td th:text="${article.price}" />
                 <td th:text="${article.description}" />
                 <td th:text="${article.type}" />
-                <!-- <td th:if="${isAdmin}">
-                    <form action="#" th:action="@{/admin/delete-beer}" th:object="${beer}" method="post">
-                        <input type="hidden" th:value="${beer.id}" name="id" />
+                <td th:if="${isAdmin}">
+                    <form action="#" th:action="@{/catalogue/delete}" th:object="${article}" method="post">
+                        <input type="hidden" th:value="${article.id}" name="id" />
                         <button type="submit" class="btn btn-danger">Supprimer</button>
                     </form>
                     
                 </td>
                 <td th:if="${isAdmin}">
-                    <form action="#" th:action="@{/admin/edit-beer}" th:object="${beer}" method="post">
-                        <input type="hidden" th:value="${beer.id}" name="id" />
+                    <a th:href="@{/catalogue/edit/{id}(id=${article.id})}">
                         <button type="submit" class="btn btn-warning">Modifier</button>
-                    </form>
-                </td> -->
+                    </a>
+                </td>
                 <!-- <td th:if="${isPublic}">
                     <form action="#" th:action="@{/evaluate}" method="post">
                         <select name="note" style="width: 40px"> class="form-control" id="eval">
@@ -43,39 +42,41 @@
                         <input type="hidden" th:value="${beer.id}" name="beerId" />
                         <button type="submit" class="btn btn-warning">Voter</button>
                     </form>
-                </td> -->			    	
+                </td> -->
             </tr>
         </tbody>
     </table>
 </div>
 
 
-
 <div th:fragment="new-article">
-	<h1>Insertion d'un article</h1>
+	<h1 th:if="${isNew}">Insertion d'un article</h1>
+	<h1 th:if="${isEdit}">Modification d'un article</h1>
 	
-	<form action="#" th:action="@{/catalogue/save}" th:object="${article}" method="post">
-	     
-	     <div class="form-group">   
-	     	<label for="name" th:text="Nom"></label>
-	        <input type="text"  class="form-control" th:required="required" th:field="*{name}" />
-	     </div>
+	<form action="#" th:action="${isNew} ? @{/catalogue/save} : @{/catalogue/update}" th:object="${article}" method="post">
+        <input th:if="${isEdit}" type="number" hidden th:field="*{id}" />
 
-         <div class="form-group">   
+        <div class="form-group">   
+            <label for="name" th:text="Nom"></label>
+            <input type="text"  class="form-control" th:required="required" th:field="*{name}" />
+        </div>
+
+        <div class="form-group">   
             <label for="name" th:text="Description"></label>
            <input type="text"  class="form-control" th:required="required" th:field="*{description}" />
         </div>
+        
+        <div class="form-group">   
+            <label for="price" th:text="Prix"></label>
+            <input type="number" min="0" value="0" step="0.05" class="form-control" th:required="required" th:field="*{price}" />
+        </div>
+        
+        <div class="form-group">   
+            <label for="type" th:text="Type"></label>
+            <input type="text" class="form-control" th:required="required" th:field="*{type}" />
+        </div>
 	     
-	     <div class="form-group">   
-	     	<label for="price" th:text="Prix"></label>
-	        <input type="number" min="0" value="0" step="0.05" class="form-control" th:required="required" th:field="*{price}" />
-	     </div>
-	     
-	     <div class="form-group">   
-	     	<label for="type" th:text="Type"></label>
-	        <input type="text" class="form-control" th:required="required" th:field="*{type}" />
-	     </div>
-	     
-	    <button type="submit" class="btn btn-primary">Créer l'article</button>
+	    <button th:if="${isNew}" type="submit" class="btn btn-primary">Créer l'article</button>
+        <button th:if="${isEdit}" type="submit" class="btn btn-primary">Modifier l'article</button>
 	</form>
 </div>
