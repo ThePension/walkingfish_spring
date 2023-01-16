@@ -43,7 +43,6 @@ class WalkingfishApplicationTests {
 		article.setPrice(10.0);
 		article.setType("Test type");
 
-
         String json = objectMapper.writeValueAsString(article);
 
         String location = mockMvc.perform(post(("/catalogue/save"))
