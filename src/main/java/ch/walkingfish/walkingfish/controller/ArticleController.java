@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,11 +30,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
 @Controller
 @RequestMapping("/catalogue")
 public class ArticleController {
-    
+
     @Autowired
     CatalogService catalogService;
 
@@ -42,63 +42,79 @@ public class ArticleController {
 
     /**
      * Show the catalogue
+     * 
      * @param model the model to add the articles to
      * @return the view to show
      */
-    @GetMapping(value = {"/", ""})
-	public String showCatalogue(Model model) {
-        List<Article> articles = catalogService.getAllArticlesFromCatalog();
+    @GetMapping(value = { "/", "" })
+    public String showCatalogue(Model model, @RequestParam(required = false) String search) {
+        List<Article> articles = null;
+
+        if (search != null) {
+            articles = catalogService//
+                .getAllArticlesFromCatalog()//
+                .stream()//
+                .filter(a -> a.getName().contains(search) || a.getDescription().contains(search))
+                .collect(Collectors.toList());
+        }
+        else
+        {
+            articles = catalogService.getAllArticlesFromCatalog();
+        }
 
         model.addAttribute("isAdmin", Boolean.TRUE);
         model.addAttribute("articles", articles);
+        model.addAttribute("search", search); // Used to keep the search term in the search bar
 
-	    return "catalogue";
-	}
+        return "catalogue";
+    }
 
     /**
      * Show the form to create a new article
+     * 
      * @param model the model to add the article to
      * @return the view to show
      */
-    @GetMapping(value = {"/create"})
+    @GetMapping(value = { "/create" })
     public String showNewArticle(Model model) {
         model.addAttribute("article", new Article());
 
         model.addAttribute("isNew", Boolean.TRUE);
-	    model.addAttribute("isEdit", Boolean.FALSE);
-          
+        model.addAttribute("isEdit", Boolean.FALSE);
+
         return "new-article";
     }
 
     /**
      * Show the article with the given id
-     * @param id the id of the article to show
+     * 
+     * @param id    the id of the article to show
      * @param model the model to add the article to
      * @return the view to show
      */
     @GetMapping(value = "/show/{id}")
-    public String showArticle(@PathVariable int id, Model model)
-	{
+    public String showArticle(@PathVariable int id, Model model) {
         Article article = null;
         try {
-            article = catalogService.getArticleById((long)id);
+            article = catalogService.getArticleById((long) id);
         } catch (Exception e) {
             return "redirect:/catalogue";
         }
 
-	    model.addAttribute("article", article);
+        model.addAttribute("article", article);
 
         model.addAttribute("isNew", Boolean.FALSE);
-	    model.addAttribute("isEdit", Boolean.TRUE);
+        model.addAttribute("isEdit", Boolean.TRUE);
 
-		return "show-article";
-	}
+        return "show-article";
+    }
 
     /**
      * Save the article and the images to the database and the server
+     * 
      * @param article the article to save
-     * @param images the images to save
-     * @param model the model to add the article to
+     * @param images  the images to save
+     * @param model   the model to add the article to
      * @return the view to show
      */
     @PostMapping(value = "/save")
@@ -110,7 +126,7 @@ public class ArticleController {
         for (MultipartFile image : images) {
             try {
                 String imageName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-                
+
                 fileStorageService.save(image, imageName);
 
                 // Save the picture to the database
@@ -126,38 +142,38 @@ public class ArticleController {
 
     /**
      * Show the form to edit the article with the given id
-     * @param id the id of the article to edit
+     * 
+     * @param id    the id of the article to edit
      * @param model the model to add the article to
      * @return the view to show
      */
     @GetMapping(value = "/edit/{id}")
-    public String showUpdateArticle(@PathVariable int id, Model model)
-	{
+    public String showUpdateArticle(@PathVariable int id, Model model) {
         Article articleToEdit = null;
         try {
-            articleToEdit = catalogService.getArticleById((long)id);
+            articleToEdit = catalogService.getArticleById((long) id);
         } catch (Exception e) {
             return "redirect:/catalogue";
         }
 
-	    model.addAttribute("article", articleToEdit);
+        model.addAttribute("article", articleToEdit);
 
         model.addAttribute("isNew", Boolean.FALSE);
-	    model.addAttribute("isEdit", Boolean.TRUE);
+        model.addAttribute("isEdit", Boolean.TRUE);
 
-		return "new-article";
-	}
+        return "new-article";
+    }
 
     /**
      * Update the article in the database
+     * 
      * @param article the article to update
-     * @param errors the errors
-     * @param model the model to add the article to
+     * @param errors  the errors
+     * @param model   the model to add the article to
      * @return the view to show
      */
     @PostMapping(value = "/update")
-    public String updateArticleInDB(@ModelAttribute Article article, BindingResult errors, Model model)
-	{
+    public String updateArticleInDB(@ModelAttribute Article article, BindingResult errors, Model model) {
         catalogService.updateArticleInDB(article);
 
         return "redirect:/catalogue";
@@ -165,15 +181,17 @@ public class ArticleController {
 
     /**
      * Delete the article with the given id
-     * @param id the id of the article to delete
+     * 
+     * @param id    the id of the article to delete
      * @param model the model to add the article to
      * @return the view to show
      */
-    @PostMapping(value="/delete")
+    @PostMapping(value = "/delete")
     public String deleteArticleInDB(@ModelAttribute("id") Integer id, Model model) {
         Article article = null;
 
-        // TODO : Fix me !! Should be done automatically by the database
+        // TODO : Fix me !! Should be done automatically by the database (Delete
+        // Cascade)
 
         // Get the article from the database
         try {
@@ -204,21 +222,23 @@ public class ArticleController {
         }
 
         catalogService.deleteArticleInDB(id.longValue());
-        
+
         return "redirect:/catalogue";
     }
 
     /**
      * Delete the picture with the given id
+     * 
      * @param picture_id the id of the picture to delete
      * @param article_id the id of the article to redirect to
-     * @param model the model to add the picture to
+     * @param model      the model to add the picture to
      * @return the view to show
      */
-    @PostMapping(value="/picture/delete")
-    public String deletePictureInDB(@ModelAttribute("picture_id") Integer picture_id, @ModelAttribute("article_id") Integer article_id, Model model) {
+    @PostMapping(value = "/picture/delete")
+    public String deletePictureInDB(@ModelAttribute("picture_id") Integer picture_id,
+            @ModelAttribute("article_id") Integer article_id, Model model) {
         Picture picture = null;
-        
+
         // Get the picture from the database
         try {
             picture = catalogService.getPictureById(picture_id.longValue());
@@ -227,7 +247,7 @@ public class ArticleController {
             e.printStackTrace();
             return "redirect:/catalogue/show/" + article_id;
         }
-        
+
         // Delete the picture from the database
         try {
             catalogService.deletePictureInDB(picture_id.longValue());
