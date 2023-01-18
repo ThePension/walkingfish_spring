@@ -10,8 +10,4 @@ public interface ArticleRepository extends CrudRepository<Article, Long> {
     Article findById(long id);
 
     List<Article> findAll();
-
-    // Article save(Article article);
-
-    // void deleteById(Long id);
 }

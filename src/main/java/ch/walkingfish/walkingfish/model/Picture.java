@@ -3,15 +3,11 @@ package ch.walkingfish.walkingfish.model;
 import java.util.Objects;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Picture {
@@ -20,6 +16,7 @@ public class Picture {
     private Long id;
 
     private String url;
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "article_id", nullable = false)
@@ -28,8 +25,9 @@ public class Picture {
     public Picture() {
     }
 
-    public Picture(String url, Article article) {
+    public Picture(String url, String name, Article article) {
         this.url = url;
+        this.name = name;
         this.article = article;
     }
 
@@ -57,16 +55,24 @@ public class Picture {
         this.url = url;
     }
 
-    @Override
-    public String toString()
-    {
-        return "Picture[article_id : " + this.article.getId() + "|this_id : " + this.id  + "|this_url : " + this.url + "]"; 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
-	public int hashCode() {
-		return Objects.hash(article, id, url);
-	}
+    public String toString() {
+        return "Picture[article_id : " + this.article.getId() + "|this_id : " + this.id + "|this_url : " + this.url
+                + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(article, id, url);
+    }
 
     @Override
     public boolean equals(Object obj) {

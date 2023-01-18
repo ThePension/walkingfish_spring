@@ -1,26 +1,19 @@
 package ch.walkingfish.walkingfish.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
 public class Article {
-    
+
     @Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String name;
     private String description;
     private Double price;
@@ -30,7 +23,6 @@ public class Article {
     private List<Picture> pictures;
 
     public Article() {
-        // this.pictures = new HashSet<>();
     }
 
     public Article(String name, String description, Double price, String type) {
@@ -38,16 +30,13 @@ public class Article {
         this.description = description;
         this.price = price;
         this.type = type;
-
-        // this.pictures = new HashSet<>();
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id)
-    {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -91,17 +80,9 @@ public class Article {
         this.pictures = pictures;
     }
 
-    // public void addPicture(Picture picture) {
-    //     this.pictures.add(picture);
-    // }
-
-    // public void removePicture(Picture picture)
-    // {
-    //     if (this.pictures.contains(picture)) this.pictures.remove(picture);
-    // }
-
     @Override
     public String toString() {
-        return "Article [description=" + description + ", id=" + id + ", name=" + name + ", price=" + price + ", type=" + type + "]";
+        return "Article [description=" + description + ", id=" + id + ", name=" + name + ", price=" + price + ", type="
+                + type + "]";
     }
 }

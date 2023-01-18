@@ -39,12 +39,12 @@
 <div class="loader"></div>
 
 
-<div class="container" id="error_box">
+<div class="container" id="error_box" th:if="${errors}">
     <div class="row justify-content-md-center">
         <div class="col-12 col-md-6">
             <div class="bg-danger text-white p-3 mt-3 mb-3 rounded text-center">
                 <h5 id="error_title"></h5>
-                <p id="error_description"></p>
+                <p id="error_description" th:text="${errors}"></p>
             </div>
         </div>
     </div>

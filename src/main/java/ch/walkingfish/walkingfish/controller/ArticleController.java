@@ -36,6 +36,11 @@ public class ArticleController {
     @Autowired
     CatalogService catalogService;
 
+    /**
+     * Show the catalogue
+     * @param model the model to add the articles to
+     * @return the view to show
+     */
     @GetMapping(value = {"/", ""})
 	public String showCatalogue(Model model) {
         List<Article> articles = catalogService.getAllArticlesFromCatalog();
@@ -46,6 +51,11 @@ public class ArticleController {
 	    return "catalogue";
 	}
 
+    /**
+     * Show the form to create a new article
+     * @param model the model to add the article to
+     * @return the view to show
+     */
     @GetMapping(value = {"/create"})
     public String showNewArticle(Model model) {
         model.addAttribute("article", new Article());
@@ -56,6 +66,12 @@ public class ArticleController {
         return "new-article";
     }
 
+    /**
+     * Show the article with the given id
+     * @param id the id of the article to show
+     * @param model the model to add the article to
+     * @return the view to show
+     */
     @GetMapping(value = "/show/{id}")
     public String showArticle(@PathVariable int id, Model model)
 	{
@@ -74,6 +90,13 @@ public class ArticleController {
 		return "show-article";
 	}
 
+    /**
+     * Save the article and the images to the database and the server
+     * @param article the article to save
+     * @param images the images to save
+     * @param model the model to add the article to
+     * @return the view to show
+     */
     @PostMapping(value = "/save")
     public String saveArticle(Article article, @RequestParam("images") MultipartFile[] images, Model model) {
         // Save the article to the database
@@ -90,7 +113,7 @@ public class ArticleController {
                 image.transferTo(path);
 
                 // Save the picture to the database
-                Picture picture = new Picture("/articlesImages/" + imageName, article);
+                Picture picture = new Picture("/articlesImages/" + imageName, imageName, article);
 
                 catalogService.savePicture(picture);
             } catch (IOException e) {
@@ -100,6 +123,12 @@ public class ArticleController {
         return "redirect:/catalogue";
     }
 
+    /**
+     * Show the form to edit the article with the given id
+     * @param id the id of the article to edit
+     * @param model the model to add the article to
+     * @return the view to show
+     */
     @GetMapping(value = "/edit/{id}")
     public String showUpdateArticle(@PathVariable int id, Model model)
 	{
@@ -118,6 +147,13 @@ public class ArticleController {
 		return "new-article";
 	}
 
+    /**
+     * Update the article in the database
+     * @param article the article to update
+     * @param errors the errors
+     * @param model the model to add the article to
+     * @return the view to show
+     */
     @PostMapping(value = "/update")
     public String updateArticleInDB(@ModelAttribute Article article, BindingResult errors, Model model)
 	{
@@ -126,6 +162,12 @@ public class ArticleController {
         return "redirect:/catalogue";
     }
 
+    /**
+     * Delete the article with the given id
+     * @param id the id of the article to delete
+     * @param model the model to add the article to
+     * @return the view to show
+     */
     @PostMapping(value="/delete")
     public String deleteArticleInDB(@ModelAttribute("id") Integer id, Model model) {
         catalogService.deleteArticleInDB(id.longValue());
@@ -133,9 +175,44 @@ public class ArticleController {
         return "redirect:/catalogue";
     }
 
+    /**
+     * Delete the picture with the given id
+     * @param picture_id the id of the picture to delete
+     * @param article_id the id of the article to redirect to
+     * @param model the model to add the picture to
+     * @return the view to show
+     */
     @PostMapping(value="/picture/delete")
     public String deletePictureInDB(@ModelAttribute("picture_id") Integer picture_id, @ModelAttribute("article_id") Integer article_id, Model model) {
-        catalogService.deletePictureInDB(picture_id.longValue());
+        Picture picture = null;
+        
+        // Get the picture from the database
+        try {
+            picture = catalogService.getPictureById(picture_id.longValue());
+        } catch (Exception e) {
+            model.addAttribute("errors", "Une erreur est survenue lors de la suppression de l'image");
+            e.printStackTrace();
+            return "redirect:/catalogue/show/" + article_id;
+        }
+        
+        // Delete the picture from the database
+        try {
+            catalogService.deletePictureInDB(picture_id.longValue());
+        } catch (Exception e) {
+            model.addAttribute("errors", "Une erreur est survenue lors de la suppression de l'image");
+            e.printStackTrace();
+            return "redirect:/catalogue/show/" + article_id;
+        }
+
+        // Delete the picture from the server
+        try {
+            File file = new File("src\\main\\resources\\static\\articlesImages" + picture.getName());
+            file.delete();
+        } catch (Exception e) {
+            model.addAttribute("errors", "Une erreur est survenue lors de la suppression de l'image");
+            e.printStackTrace();
+            return "redirect:/catalogue/show/" + article_id;
+        }
 
         return "redirect:/catalogue/show/" + article_id;
     }
