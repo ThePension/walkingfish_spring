@@ -171,6 +171,38 @@ public class ArticleController {
      */
     @PostMapping(value="/delete")
     public String deleteArticleInDB(@ModelAttribute("id") Integer id, Model model) {
+        Article article = null;
+
+        // TODO : Fix me !! Should be done automatically by the database
+
+        // Get the article from the database
+        try {
+            article = catalogService.getArticleById(id.longValue());
+        } catch (Exception e) {
+            model.addAttribute("errors", "Une erreur est survenue lors de la suppression de l'article");
+            return "redirect:/catalogue";
+        }
+
+        // Delete the pictures from the server
+        for (Picture picture : article.getPictures()) {
+            try {
+                fileStorageService.delete(picture.getName());
+            } catch (IOException e) {
+                model.addAttribute("errors", "Une erreur est survenue lors de la suppression de l'article");
+                e.printStackTrace();
+            }
+        }
+
+        // Delete the article from the database
+        for (Picture picture : article.getPictures()) {
+            try {
+                catalogService.deletePictureInDB(picture.getId());
+            } catch (Exception e) {
+                model.addAttribute("errors", "Une erreur est survenue lors de la suppression de l'article");
+                e.printStackTrace();
+            }
+        }
+
         catalogService.deleteArticleInDB(id.longValue());
         
         return "redirect:/catalogue";
