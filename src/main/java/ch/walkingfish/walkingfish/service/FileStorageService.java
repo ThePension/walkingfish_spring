@@ -14,6 +14,12 @@ public class FileStorageService {
 
     private final Path root = Paths.get("src\\main\\resources\\static\\articlesImages");
 
+    /**
+     * Save the file to the server
+     * @param file the file to save
+     * @param fileName the name of the file
+     * @throws IOException if the file can't be saved
+     */
     public void save(MultipartFile file, String fileName) throws IOException {
         File save = new File("src\\main\\resources\\static\\articlesImages", fileName);
 
@@ -22,6 +28,12 @@ public class FileStorageService {
         file.transferTo(path);
     }
 
+    /**
+     * Delete the file from the server
+     * @param filename the name of the file to delete
+     * @return true if the file was deleted, false if it didn't exist
+     * @throws IOException if the file can't be deletedF
+     */
     public boolean delete(String filename) throws IOException {
         Path file = root.resolve(filename);
         return Files.deleteIfExists(file);
