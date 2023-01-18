@@ -8,21 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.walkingfish.walkingfish.repository.ArticleRepository;
+import ch.walkingfish.walkingfish.repository.PictureRepository;
 import ch.walkingfish.walkingfish.model.*;
 
 
 @Service
-public class ArticleService {
+public class CatalogService {
 
     @Autowired
 	ArticleRepository articleRepository;
+
+	@Autowired
+	PictureRepository pictureRepository;
 
     /**
 	 * Retourne tous les articles
 	 * @return la liste des articles
 	 */
 	public List<Article> getAllArticlesFromCatalog() {
-
 		List<Article> result = new ArrayList<Article>();
 		articleRepository.findAll().forEach(result::add);
 
@@ -58,5 +61,11 @@ public class ArticleService {
 	public void deleteArticleInDB(Long id)
 	{
 		articleRepository.deleteById(id);
+	}
+
+	public void savePicture(Article article, Picture picture)
+	{
+		picture.setArticle(article);
+		pictureRepository.save(picture);
 	}
 }
