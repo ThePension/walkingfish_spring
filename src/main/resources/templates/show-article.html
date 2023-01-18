@@ -44,6 +44,23 @@
             </tr>
           </tbody>
         </table>
+        <form
+          th:if="${isAdmin}"
+          th:action="@{/catalogue/picture/save}"
+          enctype="multipart/form-data"
+          method="post"
+        >
+          <div class="form-group">
+            <label for="pictures">Ajouter une image</label>
+            <input type="file" id="images" name="images" multiple />
+          </div>
+
+          <input type="hidden" th:value="${article.id}" name="article_id" />
+          
+          <button type="submit" class="btn btn-danger">
+            Ajouter une image
+          </button>
+        </form>
 
         <div th:each="picture: ${article.pictures}">
           <form
@@ -55,7 +72,7 @@
             <input type="hidden" th:value="${picture.id}" name="picture_id" />
             <input type="hidden" th:value="${article.id}" name="article_id" />
 
-            <button type="submit" class="btn btn-danger image_delete">
+            <button type="submit" class="btn btn-danger">
               Supprimer cette image
             </button>
           </form>
@@ -67,7 +84,9 @@
 
         <div th:if="${isAdmin}">
           <a th:href="@{/catalogue/edit/{id}(id=${article.id})}">
-            <button type="submit" class="btn btn-warning">Modifier l'article</button>
+            <button type="submit" class="btn btn-warning">
+              Modifier l'article
+            </button>
           </a>
         </div>
       </div>

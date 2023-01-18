@@ -52,13 +52,11 @@ public class ArticleController {
 
         if (search != null) {
             articles = catalogService//
-                .getAllArticlesFromCatalog()//
-                .stream()//
-                .filter(a -> a.getName().contains(search) || a.getDescription().contains(search))
-                .collect(Collectors.toList());
-        }
-        else
-        {
+                    .getAllArticlesFromCatalog()//
+                    .stream()//
+                    .filter(a -> a.getName().contains(search) || a.getDescription().contains(search))
+                    .collect(Collectors.toList());
+        } else {
             articles = catalogService.getAllArticlesFromCatalog();
         }
 
@@ -119,7 +117,7 @@ public class ArticleController {
     @PostMapping(value = "/save")
     public String saveArticle(Article article, @RequestParam("images") MultipartFile[] images, Model model) {
         // Save the article to the database
-        article = catalogService.addBeerToCatalog(article);
+        article = catalogService.adArticleToCatalog(article);
 
         // Save the images to the server
         for (MultipartFile image : images) {
@@ -265,6 +263,38 @@ public class ArticleController {
             return "redirect:/catalogue/show/" + article_id;
         }
 
+        return "redirect:/catalogue/show/" + article_id;
+    }
+
+    @PostMapping(value = "/picture/save")
+    public String addPictureToArticle(@ModelAttribute("article_id") Integer article_id,
+            @RequestParam("images") MultipartFile[] images, Model model) {
+        // Get the article from the database
+        Article article;
+
+        try {
+            article = catalogService.getArticleById(article_id.longValue());
+        } catch (Exception e) {
+            model.addAttribute("errors", "Une erreur est survenue lors de l'ajout d'image(s) à l'article");
+            e.printStackTrace();
+            return "redirect:/catalogue/show/" + article_id;
+        }
+
+        // Save the images to the server
+        for (MultipartFile image : images) {
+            try {
+                String imageName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+
+                fileStorageService.save(image, imageName);
+
+                // Save the picture to the database
+                Picture picture = new Picture("/articlesImages/" + imageName, imageName, article);
+
+                catalogService.savePicture(picture);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return "redirect:/catalogue/show/" + article_id;
     }
 }

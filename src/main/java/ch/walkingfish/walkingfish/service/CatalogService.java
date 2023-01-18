@@ -38,7 +38,7 @@ public class CatalogService {
 	 * @param article the article to add
 	 * @return the article added
 	 */
-	public Article addBeerToCatalog(Article article) {
+	public Article adArticleToCatalog(Article article) {
 		return articleRepository.save(article);
 	}
 
