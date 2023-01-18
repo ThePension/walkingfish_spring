@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ch.walkingfish.walkingfish.model.Article;
 import ch.walkingfish.walkingfish.model.Picture;
 import ch.walkingfish.walkingfish.service.CatalogService;
+import ch.walkingfish.walkingfish.service.FileStorageService;
 
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,9 @@ public class ArticleController {
     
     @Autowired
     CatalogService catalogService;
+
+    @Autowired
+    FileStorageService fileStorageService;
 
     /**
      * Show the catalogue
@@ -106,11 +110,8 @@ public class ArticleController {
         for (MultipartFile image : images) {
             try {
                 String imageName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-                File save = new File("src\\main\\resources\\static\\articlesImages", imageName);
-
-                Path path = Path.of(save.getAbsolutePath());
-
-                image.transferTo(path);
+                
+                fileStorageService.save(image, imageName);
 
                 // Save the picture to the database
                 Picture picture = new Picture("/articlesImages/" + imageName, imageName, article);
@@ -206,11 +207,8 @@ public class ArticleController {
 
         // Delete the picture from the server
         try {
-            Path root = Paths.get("src\\main\\resources\\static\\articlesImages");
-            Path file = root.resolve(picture.getName());
-
-            Files.deleteIfExists(file);
-        } catch (Exception e) {
+            fileStorageService.delete(picture.getName());
+        } catch (IOException e) {
             model.addAttribute("errors", "Une erreur est survenue lors de la suppression de l'image");
             e.printStackTrace();
             return "redirect:/catalogue/show/" + article_id;
