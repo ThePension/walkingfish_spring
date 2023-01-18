@@ -206,8 +206,10 @@ public class ArticleController {
 
         // Delete the picture from the server
         try {
-            File file = new File("src\\main\\resources\\static\\articlesImages" + picture.getName());
-            file.delete();
+            Path root = Paths.get("src\\main\\resources\\static\\articlesImages");
+            Path file = root.resolve(picture.getName());
+
+            Files.deleteIfExists(file);
         } catch (Exception e) {
             model.addAttribute("errors", "Une erreur est survenue lors de la suppression de l'image");
             e.printStackTrace();
