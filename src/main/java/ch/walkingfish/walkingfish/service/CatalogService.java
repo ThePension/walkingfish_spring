@@ -63,9 +63,34 @@ public class CatalogService {
 		articleRepository.deleteById(id);
 	}
 
-	public void savePicture(Article article, Picture picture)
+	public void deletePictureInDB(Long id)
 	{
-		picture.setArticle(article);
+		Optional<Picture> optPicture = pictureRepository.findById(id);
+
+		if (optPicture.isPresent())
+		{
+			Picture picture = optPicture.get();
+			// Article article = picture.getArticle();
+
+			// article.removePicture(picture);
+
+			// articleRepository.save(article);
+
+			pictureRepository.delete(picture);			
+		}
+	}
+
+	public void savePicture(Picture picture)
+	{
 		pictureRepository.save(picture);
+	}
+
+	public void addPicturesToArticle(List<Picture> pictures, Article article)
+	{
+		for (Picture picture : pictures)
+		{
+			// picture.setArticle(article);
+			pictureRepository.save(picture);
+		}
 	}
 }

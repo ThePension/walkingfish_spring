@@ -10,23 +10,34 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Picture {
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="article_id", nullable=false)
-	private Article article;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String url;
 
+    @ManyToOne
+    @JoinColumn(name = "article_id", nullable = false)
+    private Article article;
+
     public Picture() {
     }
 
     public Picture(String url, Article article) {
         this.url = url;
+        this.article = article;
+    }
+
+    public Article getArticle() {
+        return this.article;
+    }
+
+    public void setArticle(Article article) {
         this.article = article;
     }
 
@@ -44,16 +55,6 @@ public class Picture {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public Article getArticle()
-    {
-        return this.article;
-    }
-
-    public void setArticle(Article article)
-    {
-        this.article = article;
     }
 
     @Override

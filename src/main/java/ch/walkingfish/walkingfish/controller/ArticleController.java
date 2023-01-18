@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +56,30 @@ public class ArticleController {
         return "new-article";
     }
 
+    @GetMapping(value = "/show/{id}")
+    public String showArticle(@PathVariable int id, Model model)
+	{
+        Article article = null;
+        try {
+            article = catalogService.getArticleById((long)id);
+        } catch (Exception e) {
+            return "redirect:/catalogue";
+        }
+
+	    model.addAttribute("article", article);
+
+        model.addAttribute("isNew", Boolean.FALSE);
+	    model.addAttribute("isEdit", Boolean.TRUE);
+
+		return "show-article";
+	}
+
     @PostMapping(value = "/save")
     public String saveArticle(Article article, @RequestParam("images") MultipartFile[] images, Model model) {
+        // Save the article to the database
         article = catalogService.addBeerToCatalog(article);
-        // Sauvegarder les images sur le serveur
+
+        // Save the images to the server
         for (MultipartFile image : images) {
             try {
                 String imageName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
@@ -66,20 +87,16 @@ public class ArticleController {
 
                 Path path = Path.of(save.getAbsolutePath());
 
-                System.out.println("Path : " + path);
-
                 image.transferTo(path);
 
-                Picture picture = new Picture("articlesImages/" + imageName, article);
+                // Save the picture to the database
+                Picture picture = new Picture("/articlesImages/" + imageName, article);
 
-                catalogService.savePicture(article, picture);
-    
-                article.addPicture(picture);
+                catalogService.savePicture(picture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        
         return "redirect:/catalogue";
     }
 
@@ -115,5 +132,11 @@ public class ArticleController {
         
         return "redirect:/catalogue";
     }
-    
+
+    @PostMapping(value="/picture/delete")
+    public String deletePictureInDB(@ModelAttribute("picture_id") Integer picture_id, @ModelAttribute("article_id") Integer article_id, Model model) {
+        catalogService.deletePictureInDB(picture_id.longValue());
+
+        return "redirect:/catalogue/show/" + article_id;
+    }
 }

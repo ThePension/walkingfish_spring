@@ -6,11 +6,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -24,11 +26,11 @@ public class Article {
     private Double price;
     private String type;
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
-	private Set<Picture> pictures;
+    @OneToMany(mappedBy = "article")
+    private List<Picture> pictures;
 
     public Article() {
-        this.pictures = new HashSet<>();
+        // this.pictures = new HashSet<>();
     }
 
     public Article(String name, String description, Double price, String type) {
@@ -37,7 +39,7 @@ public class Article {
         this.price = price;
         this.type = type;
 
-        this.pictures = new HashSet<>();
+        // this.pictures = new HashSet<>();
     }
 
     public Long getId() {
@@ -82,16 +84,21 @@ public class Article {
     }
 
     public List<Picture> getPictures() {
-        return this.pictures.stream().toList();
+        return this.pictures;
     }
 
-    public void setPictures(Set<Picture> pictures) {
+    public void setPictures(List<Picture> pictures) {
         this.pictures = pictures;
     }
 
-    public void addPicture(Picture picture) {
-        this.pictures.add(picture);
-    }
+    // public void addPicture(Picture picture) {
+    //     this.pictures.add(picture);
+    // }
+
+    // public void removePicture(Picture picture)
+    // {
+    //     if (this.pictures.contains(picture)) this.pictures.remove(picture);
+    // }
 
     @Override
     public String toString() {
