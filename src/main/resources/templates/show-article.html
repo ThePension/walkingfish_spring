@@ -32,8 +32,6 @@
               <th scope="col">Prix</th>
               <th scope="col">Description</th>
               <th scope="col">Type</th>
-              <th scope="col" th:if="${isAdmin}">Supprimer</th>
-              <th scope="col" th:if="${isAdmin}">Modifier</th>
             </tr>
           </thead>
 
@@ -43,32 +41,13 @@
               <td th:text="${article.price}"></td>
               <td th:text="${article.description}"></td>
               <td th:text="${article.type}"></td>
-              <td th:if="${isAdmin}">
-                <form
-                  action="#"
-                  th:action="@{/catalogue/delete}"
-                  th:object="${article}"
-                  method="post"
-                >
-                  <input type="hidden" th:value="${article.id}" name="id" />
-                  <button type="submit" class="btn btn-danger">
-                    Supprimer
-                  </button>
-                </form>
-              </td>
-              <td th:if="${isAdmin}">
-                <a th:href="@{/catalogue/edit/{id}(id=${article.id})}">
-                  <button type="submit" class="btn btn-warning">
-                    Modifier
-                  </button>
-                </a>
-              </td>
             </tr>
           </tbody>
         </table>
 
         <div th:each="picture: ${article.pictures}">
           <form
+            th:if="${isAdmin}"
             action="#"
             th:action="@{/catalogue/picture/delete}"
             method="post"
@@ -76,24 +55,21 @@
             <input type="hidden" th:value="${picture.id}" name="picture_id" />
             <input type="hidden" th:value="${article.id}" name="article_id" />
 
-            <button
-              type="submit"
-              class="btn btn-danger image_delete"
-            >
+            <button type="submit" class="btn btn-danger image_delete">
               Supprimer cette image
             </button>
-            <div>
-              <img
-                th:src="${picture.url}"
-                style="width: 100px; height: 100px"
-              />
-            </div>
           </form>
+
+          <div>
+            <img th:src="${picture.url}" style="width: 100px; height: 100px" />
+          </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">
-          Modifier l'article
-        </button>
+        <div th:if="${isAdmin}">
+          <a th:href="@{/catalogue/edit/{id}(id=${article.id})}">
+            <button type="submit" class="btn btn-warning">Modifier l'article</button>
+          </a>
+        </div>
       </div>
     </div>
 

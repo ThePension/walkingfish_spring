@@ -65,9 +65,6 @@ public class CatalogService {
 	 * @return the article updated
 	 */
 	public Article updateArticleInDB(Article article) {
-		// TODO : Fix this
-		articleRepository.delete(article);
-
 		return articleRepository.save(article);
 	}
 

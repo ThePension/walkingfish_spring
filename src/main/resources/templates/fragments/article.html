@@ -10,7 +10,6 @@
         <th scope="col">Type</th>
         <th scope="col">Images</th>
         <th scope="col" th:if="${isAdmin}">Supprimer</th>
-        <th scope="col" th:if="${isAdmin}">Modifier</th>
         <th scope="col">Voir</th>
       </tr>
     </thead>
@@ -36,11 +35,6 @@
             <input type="hidden" th:value="${article.id}" name="id" />
             <button type="submit" class="btn btn-danger">Supprimer</button>
           </form>
-        </td>
-        <td th:if="${isAdmin}">
-          <a th:href="@{/catalogue/edit/{id}(id=${article.id})}">
-            <button type="submit" class="btn btn-warning">Modifier</button>
-          </a>
         </td>
         <td>
           <a th:href="@{/catalogue/show/{id}(id=${article.id})}">
@@ -108,25 +102,15 @@
       />
     </div>
 
-    <div class="form-group">
+    <div th:if="${!isEdit}" class="form-group">
       <label for="pictures">Images de l'article:</label>
       <input type="file" id="images" name="images" multiple />
     </div>
 
     <div th:if="${isEdit}" th:each="picture: ${article.pictures}">
-      <!-- <form action="#" th:action="@{/catalogue/picture/delete}" method="post"> -->
-      <!-- <input type="hidden" th:value="${picture.id}" name="id" /> -->
-      <button
-        type="button"
-        class="btn btn-danger image_delete"
-        data-id="${picture.id}"
-      >
-        Supprimer cette image
-      </button>
       <div>
         <img th:src="${picture.url}" style="width: 100px; height: 100px" />
       </div>
-      <!-- </form> -->
     </div>
 
     <button th:if="${isNew}" type="submit" class="btn btn-primary">

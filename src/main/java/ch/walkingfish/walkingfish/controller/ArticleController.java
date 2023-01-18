@@ -103,8 +103,7 @@ public class ArticleController {
 
         model.addAttribute("article", article);
 
-        model.addAttribute("isNew", Boolean.FALSE);
-        model.addAttribute("isEdit", Boolean.TRUE);
+        model.addAttribute("isAdmin", Boolean.TRUE);
 
         return "show-article";
     }
@@ -176,7 +175,7 @@ public class ArticleController {
     public String updateArticleInDB(@ModelAttribute Article article, BindingResult errors, Model model) {
         catalogService.updateArticleInDB(article);
 
-        return "redirect:/catalogue";
+        return "redirect:/catalogue/show/" + article.getId();
     }
 
     /**
