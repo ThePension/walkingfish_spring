@@ -1,6 +1,6 @@
 <div th:fragment="article-list">
   <h1>Liste des article</h1>
-
+  
   <table class="table">
     <thead class="thead-dark">
       <tr>
@@ -28,7 +28,7 @@
         <td th:if="${isAdmin}">
           <form
             action="#"
-            th:action="@{/catalogue/delete}"
+            th:action="@{/admin/delete}"
             th:object="${article}"
             method="post"
           >
@@ -37,7 +37,10 @@
           </form>
         </td>
         <td>
-          <a th:href="@{/catalogue/show/{id}(id=${article.id})}">
+          <a th:if="${!isAdmin}" th:href="@{/catalogue/show/{id}(id=${article.id})}">
+            <button type="submit" class="btn btn-warning">Voir</button>
+          </a>
+          <a th:if="${isAdmin}" th:href="@{/admin/show/{id}(id=${article.id})}">
             <button type="submit" class="btn btn-warning">Voir</button>
           </a>
         </td>
@@ -52,7 +55,7 @@
 
   <form
     action="#"
-    th:action="${isNew} ? @{/catalogue/save} : @{/catalogue/update}"
+    th:action="${isNew} ? @{/admin/save} : @{/admin/update}"
     th:object="${article}"
     enctype="multipart/form-data"
     method="post"

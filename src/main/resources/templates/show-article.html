@@ -46,7 +46,7 @@
         </table>
         <form
           th:if="${isAdmin}"
-          th:action="@{/catalogue/picture/save}"
+          th:action="@{/admin/picture/save}"
           enctype="multipart/form-data"
           method="post"
         >
@@ -66,7 +66,7 @@
           <form
             th:if="${isAdmin}"
             action="#"
-            th:action="@{/catalogue/picture/delete}"
+            th:action="@{/admin/picture/delete}"
             method="post"
           >
             <input type="hidden" th:value="${picture.id}" name="picture_id" />
@@ -83,7 +83,7 @@
         </div>
 
         <div th:if="${isAdmin}">
-          <a th:href="@{/catalogue/edit/{id}(id=${article.id})}">
+          <a th:href="@{/admin/edit/{id}(id=${article.id})}">
             <button type="submit" class="btn btn-warning">
               Modifier l'article
             </button>

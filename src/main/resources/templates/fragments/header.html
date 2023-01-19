@@ -28,6 +28,19 @@
                 </div>
             </li>
         </ul>
+
+        <!--  **************** logout ****************** -->
+        <div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()"> 
+            <div>
+                <form action="#" th:action="@{/logout}" method="post"> 
+                    <input class="btn btn-success mr-4" type="submit" value="Logout" />
+                </form>
+            </div>
+
+            <div>
+                <a class="btn btn-success mr-4" href="/admin/create">Ajouter un article</a>
+            </div>
+        </div>
         <form class="form-inline navbar-brand" th:action="@{/catalogue}" method="GET">
             <input class="form-control" type="search" placeholder="Recherche" id="search" name="search" th:value="${search} ? ${search} : ''">
             <button class="btn btn-light" type="submit" value="submit">Rechercher</button>
