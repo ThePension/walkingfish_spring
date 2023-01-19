@@ -89,27 +89,6 @@ footer {
 	border: 1px black solid;
 }
 
-.loader {
-	display: none;
-	position: fixed;
-	z-index: 100;
-	margin-top: 50px;
-	bottom: 50vh;
-	border: 30px solid #BD9C77;
-	border-top: 30px solid #5E4E3B;
-	border-radius: 50%;
-	width: 200px;
-	height: 200px;
-	margin: 0 auto;
-	left: calc(50vw - 100px);
-	animation: spin 2s linear infinite;
-  }
-  
-@keyframes spin {
-	0% { transform: rotate(0deg); }
-	100% { transform: rotate(360deg); }
-}
-
 .subtitle_homepage h2 {
 	border-bottom: solid #BD9C77 5px;
 	text-align: justify;
@@ -117,8 +96,4 @@ footer {
 	font-size: 5em;
 	color: black;
 	background-color: white;
-}
-
-#error_box {
-	display: none;
 }

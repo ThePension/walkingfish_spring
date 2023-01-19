@@ -1,65 +1,116 @@
 <!--Navbar-->
-<nav th:fragment="header" class="navbar navbar-expand-lg navbar-dark" style="background-color: #BD9C77; border-bottom: 5px #A38767 solid;">
-
+<div th:fragment="header">
+  <nav
+    class="navbar navbar-expand-lg navbar-dark"
+    style="background-color: #bd9c77; border-bottom: 5px #a38767 solid"
+  >
     <!-- Navbar brand -->
-    <a href="/" class="d-none d-sm-block" id="titre"><h1 style="font-weight: 50;">WalkingFish</h1></a>
-    <a href="/" class="m-3 ml-5 mr-5"><img id="wf_logo" src="/img/white_walkingfish_logo.png" alt="Logo WalkingFish"/></a>
+    <a href="/" class="d-none d-sm-block" id="titre"
+      ><h1 style="font-weight: 50">WalkingFish</h1></a
+    >
+    <a href="/" class="m-3 ml-5 mr-5"
+      ><img
+        id="wf_logo"
+        src="/img/white_walkingfish_logo.png"
+        alt="Logo WalkingFish"
+    /></a>
 
     <!-- Collapse button -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#basicExampleNav"
+      aria-controls="basicExampleNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
     </button>
 
     <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="basicExampleNav">
-        <ul class="navbar-nav mr-auto text-white h4">
-            <li class="nav-item" id="accueil">
-                <a class="nav-link" href="/">Accueil <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item" id="catalogue">
-                <a class="nav-link" href="/catalogue">Catalogue</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Nous contacter
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="https://instagram.com/walkingxfish?igshid=aoi76q9yl4vj" target="blank"><img id="wf_logo" src="img/insta_logo.ico" style="width: 32px; padding-right: 10px;" />Instagram</a>
-                </div>
-            </li>
-        </ul>
+      <ul class="navbar-nav mr-auto text-white h4">
+        <li class="nav-item" id="accueil">
+          <a class="nav-link" href="/"
+            >Accueil <span class="sr-only">(current)</span></a
+          >
+        </li>
+        <li class="nav-item" id="catalogue">
+          <a class="nav-link" href="/catalogue">Catalogue</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdownMenuLink"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Nous contacter
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a
+              class="dropdown-item"
+              href="https://instagram.com/walkingxfish?igshid=aoi76q9yl4vj"
+              target="blank"
+              ><img
+                id="wf_logo"
+                src="img/insta_logo.ico"
+                style="width: 32px; padding-right: 10px"
+              />Instagram</a
+            >
+          </div>
+        </li>
+      </ul>
 
-        <!--  **************** logout ****************** -->
-        <div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()"> 
-            <div>
-                <form action="#" th:action="@{/logout}" method="post"> 
-                    <input class="btn btn-success mr-4" type="submit" value="Logout" />
-                </form>
-            </div>
-
-            <div>
-                <a class="btn btn-success mr-4" href="/admin/create">Ajouter un article</a>
-            </div>
+      <!--  **************** logout ****************** -->
+      <div
+        th:fragment="logout"
+        class="logout"
+        sec:authorize="isAuthenticated()"
+      >
+        <div>
+          <form action="#" th:action="@{/logout}" method="post">
+            <input class="btn btn-success mr-4" type="submit" value="Logout" />
+          </form>
         </div>
-        <form class="form-inline navbar-brand" th:action="@{/catalogue}" method="GET">
-            <input class="form-control" type="search" placeholder="Recherche" id="search" name="search" th:value="${search} ? ${search} : ''">
-            <button class="btn btn-light" type="submit" value="submit">Rechercher</button>
-        </form>
+
+        <div>
+          <a class="btn btn-success mr-4" href="/admin/create"
+            >Ajouter un article</a
+          >
+        </div>
+      </div>
+      <form
+        class="form-inline navbar-brand"
+        th:action="@{/catalogue}"
+        method="GET"
+      >
+        <input
+          class="form-control"
+          type="search"
+          placeholder="Recherche"
+          id="search"
+          name="search"
+          th:value="${search} ? ${search} : ''"
+        />
+        <button class="btn btn-light" type="submit" value="submit">
+          Rechercher
+        </button>
+      </form>
     </div>
-</nav>
+  </nav>
 
-
-<div class="loader"></div>
-
-
-<div class="container" id="error_box" th:if="${errors}">
+  <div class="container" id="error_box" th:if="${errors}">
     <div class="row justify-content-md-center">
-        <div class="col-12 col-md-6">
-            <div class="bg-danger text-white p-3 mt-3 mb-3 rounded text-center">
-                <h5 id="error_title"></h5>
-                <p id="error_description" th:text="${errors}"></p>
-            </div>
+      <div class="col-12 col-md-6">
+        <div class="bg-danger text-white p-3 mt-3 mb-3 rounded text-center">
+          <h5 id="error_title"></h5>
+          <p id="error_description" th:text="${errors}"></p>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-
