@@ -1,6 +1,6 @@
 <div th:fragment="article-list">
   <h1>Liste des article</h1>
-  
+
   <table class="table">
     <thead class="thead-dark">
       <tr>
@@ -37,7 +37,10 @@
           </form>
         </td>
         <td>
-          <a th:if="${!isAdmin}" th:href="@{/catalogue/show/{id}(id=${article.id})}">
+          <a
+            th:if="${!isAdmin}"
+            th:href="@{/catalogue/show/{id}(id=${article.id})}"
+          >
             <button type="submit" class="btn btn-warning">Voir</button>
           </a>
           <a th:if="${isAdmin}" th:href="@{/admin/show/{id}(id=${article.id})}">
@@ -47,6 +50,17 @@
       </tr>
     </tbody>
   </table>
+  <div
+    th:if="${articles.totalPages > 0}"
+    class="pagination"
+    th:each="pageNumber : ${pageNumbers}"
+  >
+    <a
+      th:href="@{/catalogue(search=${search}, page=${pageNumber})}"
+      th:text="${pageNumber}"
+      th:class="${pageNumber==articles.number + 1} ? active"
+    ></a>
+  </div>
 </div>
 
 <div th:fragment="new-article">

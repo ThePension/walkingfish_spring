@@ -1,10 +1,16 @@
 package ch.walkingfish.walkingfish.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ch.walkingfish.walkingfish.repository.ArticleRepository;
@@ -30,6 +36,49 @@ public class CatalogService {
 		articleRepository.findAll().forEach(result::add);
 
 		return result;
+	}
+
+	public Page<Article> findPaginated(Pageable pageable) {
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		int startItem = currentPage * pageSize;
+		List<Article> list;
+
+		List<Article> articles = getAllArticlesFromCatalog();
+
+		if (articles.size() < startItem) {
+			list = Collections.emptyList();
+		} else {
+			int toIndex = Math.min(startItem + pageSize, articles.size());
+			list = articles.subList(startItem, toIndex);
+		}
+
+		Page<Article> bookPage = new PageImpl<Article>(list, PageRequest.of(currentPage, pageSize), articles.size());
+
+		return bookPage;
+	}
+
+	public Page<Article> findPaginatedAndFiltered(Pageable pageable, String search) {
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		int startItem = currentPage * pageSize;
+		List<Article> list;
+
+		List<Article> articles = getAllArticlesFromCatalog()//
+				.stream()//
+				.filter(a -> a.getName().contains(search) || a.getDescription().contains(search))
+				.collect(Collectors.toList());
+
+		if (articles.size() < startItem) {
+			list = Collections.emptyList();
+		} else {
+			int toIndex = Math.min(startItem + pageSize, articles.size());
+			list = articles.subList(startItem, toIndex);
+		}
+
+		Page<Article> bookPage = new PageImpl<Article>(list, PageRequest.of(currentPage, pageSize), articles.size());
+
+		return bookPage;
 	}
 
 	/**
@@ -99,9 +148,7 @@ public class CatalogService {
 			Picture picture = optPicture.get();
 
 			pictureRepository.delete(picture);
-		}
-		else
-		{
+		} else {
 			throw new Exception("This picture does not exist");
 		}
 	}
@@ -127,9 +174,7 @@ public class CatalogService {
 
 		if (optPicture.isPresent()) {
 			return optPicture.get();
-		}
-		else
-		{
+		} else {
 			throw new Exception("This picture does not exist");
 		}
 	}
