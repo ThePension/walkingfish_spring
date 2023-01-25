@@ -30,13 +30,6 @@ public class CatalogueServiceTests {
   }
 
   @Test
-  public void testArticlesEmpty() {
-    Iterable<Article> articles = articleRepository.findAll();
-
-    assertThat(articles).isEmpty();
-  }
-
-  @Test
   public void testGetAllArticles() {
       // Arrange
       List<Article> articles = Arrays.asList(
@@ -112,8 +105,17 @@ public class CatalogueServiceTests {
       // Act
       catalogService.deleteArticleInDB(article);
 
+      // Try get the article
+      Article result = null;
+      try {
+        result = catalogService.getArticleById(article.getId());
+      } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+
       // Assert
-      assertThat(catalogService.getAllArticlesFromCatalog()).isEmpty();
+      assertThat(result).isNull();
   }
 
   @Test

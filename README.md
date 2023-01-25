@@ -41,3 +41,6 @@ https://www.baeldung.com/spring-thymeleaf-pagination
 
 ### Testing
 https://www.bezkoder.com/spring-boot-unit-test-jpa-repo-datajpatest/
+
+### Carousel
+https://splidejs.com/tutorials/thumbnail-carousel/

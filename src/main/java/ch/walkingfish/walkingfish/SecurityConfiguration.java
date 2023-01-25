@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                         "/css/**",
                         "/img/**",
                         "/js/**",
+                        "/h2/**",
                         "/fonts/**")
                 .permitAll()
                 .anyRequest().authenticated()

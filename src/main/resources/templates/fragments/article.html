@@ -1,6 +1,79 @@
 <div th:fragment="article-list">
   <h1>Liste des article</h1>
 
+  <div class="images-carousels" th:each="article: ${articles}">
+    <section
+      id="main-carousel"
+      class="splide main-carousels"
+    >
+      <div class="splide__track">
+        <ul class="splide__list">
+          <li class="splide__slide" th:each="picture: ${article.pictures}">
+            <img th:src="${picture.url}" />
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section
+      id="thumbnail-carousel"
+      class="splide thumbnail-carousels"
+    >
+      <div class="splide__track">
+        <ul class="splide__list">
+          <li class="splide__slide" th:each="picture: ${article.pictures}">
+            <img th:src="${picture.url}" />
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+
+  <!--<section class="product" >
+    <div class="product__photo">
+      <div class="photo-container">
+
+        
+
+        <div class="photo-main">
+
+          <img src="https://res.cloudinary.com/john-mantas/image/upload/v1537291846/codepen/delicious-apples/green-apple-with-slice.png" alt="green apple slice">
+        </div>
+        <div class="photo-album">
+          <ul>
+            <li><img src="https://res.cloudinary.com/john-mantas/image/upload/v1537302064/codepen/delicious-apples/green-apple2.png" alt="green apple"></li>
+            <li><img src="https://res.cloudinary.com/john-mantas/image/upload/v1537303532/codepen/delicious-apples/half-apple.png" alt="half apple"></li>
+            <li><img src="https://res.cloudinary.com/john-mantas/image/upload/v1537303160/codepen/delicious-apples/green-apple-flipped.png" alt="green apple"></li>
+            <li><img src="https://res.cloudinary.com/john-mantas/image/upload/v1537303708/codepen/delicious-apples/apple-top.png" alt="apple top"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="product__info">
+      <div class="title">
+        <h1>Delicious Apples</h1>
+      </div>
+      <div class="price">
+        <span>7.93</span> CHF
+      </div>
+      <div class="variant">
+        <h3>SELECT A COLOR</h3>
+        <ul>
+          <li><img src="https://res.cloudinary.com/john-mantas/image/upload/v1537302064/codepen/delicious-apples/green-apple2.png" alt="green apple"></li>
+          <li><img src="https://res.cloudinary.com/john-mantas/image/upload/v1537302752/codepen/delicious-apples/yellow-apple.png" alt="yellow apple"></li>
+          <li><img src="https://res.cloudinary.com/john-mantas/image/upload/v1537302427/codepen/delicious-apples/orange-apple.png" alt="orange apple"></li>
+          <li><img src="https://res.cloudinary.com/john-mantas/image/upload/v1537302285/codepen/delicious-apples/red-apple.png" alt="red apple"></li>
+        </ul>
+      </div>
+      <div class="description">
+        <h3>Description</h3>
+
+      </div>
+      <button class="details-btn">Plus de détails</button>
+    </div>
+  </section>
+
   <table class="table">
     <thead class="thead-dark">
       <tr>
@@ -49,13 +122,10 @@
         </td>
       </tr>
     </tbody>
-  </table>
+  </table>-->
 
-  <div
-    th:if="${articles.totalPages} > 1"
-    class="pagination-container"
-  >
-    <a     
+  <div th:if="${articles.totalPages} > 1" class="pagination-container">
+    <a
       th:each="pageNumber : ${pageNumbers}"
       th:href="@{/catalogue(search=${search}, page=${pageNumber})}"
       th:text="${pageNumber}"
@@ -124,12 +194,6 @@
     <div th:if="${!isEdit}" class="form-group">
       <label for="pictures">Images de l'article:</label>
       <input type="file" id="images" name="images" multiple />
-    </div>
-
-    <div th:if="${isEdit}" th:each="picture: ${article.pictures}">
-      <div>
-        <img th:src="${picture.url}" style="width: 100px; height: 100px" />
-      </div>
     </div>
 
     <button th:if="${isNew}" type="submit" class="btn btn-primary">
