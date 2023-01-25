@@ -50,15 +50,17 @@
       </tr>
     </tbody>
   </table>
+
   <div
     th:if="${articles.totalPages > 0}"
-    class="pagination"
-    th:each="pageNumber : ${pageNumbers}"
+    class="pagination-container"
   >
-    <a
+    <a     
+      th:each="pageNumber : ${pageNumbers}"
       th:href="@{/catalogue(search=${search}, page=${pageNumber})}"
       th:text="${pageNumber}"
-      th:class="${pageNumber==articles.number + 1} ? active"
+      class="pagination-button"
+      th:classappend="${pageNumber==articles.number + 1} ? active"
     ></a>
   </div>
 </div>
