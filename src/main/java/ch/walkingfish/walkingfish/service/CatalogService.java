@@ -87,7 +87,7 @@ public class CatalogService {
 	 * @param article the article to add
 	 * @return the article added
 	 */
-	public Article adArticleToCatalog(Article article) {
+	public Article addArticleToCatalog(Article article) {
 		return articleRepository.save(article);
 	}
 
@@ -158,8 +158,8 @@ public class CatalogService {
 	 * 
 	 * @param picture the picture to save
 	 */
-	public void savePicture(Picture picture) {
-		pictureRepository.save(picture);
+	public Picture savePicture(Picture picture) {
+		return pictureRepository.save(picture);
 	}
 
 	/**

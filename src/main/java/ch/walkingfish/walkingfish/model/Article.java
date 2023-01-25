@@ -85,4 +85,37 @@ public class Article {
         return "Article [description=" + description + ", id=" + id + ", name=" + name + ", price=" + price + ", type="
                 + type + "]";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        // Test if other is an instance of Article
+        Article other = (Article) obj;
+
+        if (this == other) {
+            return true;
+        }
+
+        if (!this.id.equals(other.getId())){
+            return false;
+        }
+        
+        if (!this.name.equals(other.getName())) {
+            return false;
+        }
+
+        if (!this.description.equals(other.getDescription())) {
+            return false;
+        }
+        
+        if (!this.price.equals(other.getPrice()))
+        {
+            return false;
+        }
+        
+        if (!this.type.equals(other.getType())) {
+            return false;
+        }
+
+        return true;
+    }
 }

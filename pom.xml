@@ -13,7 +13,7 @@
 	<version>0.0.1</version>
 	<packaging>war</packaging>
 	<name>walkingfish</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Walking Fish</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -67,7 +67,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- spring security web -->

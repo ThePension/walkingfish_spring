@@ -121,7 +121,7 @@ public class AdminController {
     @PostMapping(value = "/save")
     public String saveArticle(Article article, @RequestParam("images") MultipartFile[] images, Model model) {
         // Save the article to the database
-        article = catalogService.adArticleToCatalog(article);
+        article = catalogService.addArticleToCatalog(article);
 
         // Save the images to the server
         for (MultipartFile image : images) {

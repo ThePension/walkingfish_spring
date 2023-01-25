@@ -18,7 +18,7 @@ import ch.walkingfish.walkingfish.model.Article;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class WalkingfishApplicationTests {
+class WalkingfishControllerTests {
 	@Autowired
 	private MockMvc mockMvc;
 
