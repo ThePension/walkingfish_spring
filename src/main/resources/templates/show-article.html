@@ -44,67 +44,6 @@
             </tr>
           </tbody>
         </table>
-        <!-- <form
-          th:if="${isAdmin}"
-          th:action="@{/admin/picture/save}"
-          enctype="multipart/form-data"
-          method="post"
-        >
-          <div class="form-group">
-            <label for="pictures">Ajouter une image</label>
-            <input type="file" id="images" name="images" multiple />
-          </div>
-
-          <input type="hidden" th:value="${article.id}" name="article_id" />
-
-          <button class="add-button" type="submit">
-            <svg viewBox="0 0 100 100">
-              <path
-                d="M50,10 L50,90 M10,50 L90,50"
-                stroke="#BD9C77"
-                stroke-width="5"
-              />
-            </svg>
-          </button>
-        </form> -->
-
-        <div class="add-button-container">
-          <button class="add-button" type="submit">
-            <svg viewBox="0 0 100 100">
-              <path
-                d="M50,10 L50,90 M10,50 L90,50"
-                stroke="#BD9C77"
-                stroke-width="5"
-              />
-            </svg>
-          </button>
-            
-          <div th:each="picture: ${article.pictures}" class="image-container">
-            <!-- <form
-              th:if="${isAdmin}"
-              action="#"
-              th:action="@{/admin/picture/delete}"
-              method="post"
-            >
-              <input type="hidden" th:value="${picture.id}" name="picture_id" />
-              <input type="hidden" th:value="${article.id}" name="article_id" />
-
-              <button type="submit" class="btn btn-danger">
-                Supprimer cette image
-              </button>
-            </form> -->
-            
-            <div class="image-wrapper">
-              <img th:src="${picture.url}" class="image" />
-              
-              <button class="remove-button">
-                <svg viewBox="0 0 100 100">
-                  <path d="M10,10 L90,90 M90,10 L10,90" stroke="black" stroke-width="10" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
 
         <div th:if="${isAdmin}">
           <a th:href="@{/admin/edit/{id}(id=${article.id})}">
@@ -113,9 +52,70 @@
             </button>
           </a>
         </div>
+
+        <h1>Images de l'article</h1>
+
+        <div class="add-button-container">
+          <form
+            class="add-button"
+            id="addImagesForm"
+            th:if="${isAdmin}"
+            th:action="@{/admin/picture/save}"
+            enctype="multipart/form-data"
+            method="post"
+          >
+            <label for="images" class="upload-file-button">
+              <svg viewBox="0 0 100 100">
+                <path
+                  d="M50,10 L50,90 M10,50 L90,50"
+                  stroke="#BD9C77"
+                  stroke-width="5"
+                />
+              </svg>
+            </label>
+
+            <input type="hidden" th:value="${article.id}" name="article_id" />
+
+            <input
+              type="file"
+              id="images"
+              name="images"
+              multiple
+              style="display: none"
+            />
+          </form>
+
+          <form
+            th:each="picture: ${article.pictures}"
+            class="image-container"
+            th:if="${isAdmin}"
+            action="#"
+            th:action="@{/admin/picture/delete}"
+            method="post"
+          >
+
+            <input type="hidden" th:value="${picture.id}" name="picture_id" />
+            <input type="hidden" th:value="${article.id}" name="article_id" />
+
+            <div class="image-wrapper">
+              <img th:src="${picture.url}" class="image" />
+
+              <button class="remove-button btn btn-danger" type="submit">
+                Supprimer
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>
+
+    <script>
+      document.getElementById("images").onchange = function () {
+        document.getElementById("addImagesForm").submit();
+        print("submitted");
+      };
+    </script>
   </body>
 </html>

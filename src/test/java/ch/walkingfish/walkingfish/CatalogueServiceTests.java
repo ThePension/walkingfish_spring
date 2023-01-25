@@ -24,7 +24,7 @@ public class CatalogueServiceTests {
   ArticleRepository articleRepository;
 
   @Test
-  void injectedComponentsAreNotNull(){
+  void testInjectedComponentsAreNotNull(){
     assertThat(articleRepository).isNotNull();
     assertThat(catalogService).isNotNull();
   }

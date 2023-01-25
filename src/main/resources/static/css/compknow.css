@@ -135,17 +135,9 @@ footer {
   }
 
   .remove-button {
-	position: absolute; /* Position remove button in top right corner */
-	top: 0;
-	right: 0;
-	width: 20px;
-	height: 20px;
-	padding: 0;
-	margin: 0;
-	border: none;
-	background-color: transparent;
-	transition: transform .5s;
-	transform: translate(20px, -20px); /* Move button by 15% in both x and y axis */
+	width: 100%;
+	padding: 5px;
+	margin-top: 5px;
 	display: none; /* Hide remove button by default */
   }
 
