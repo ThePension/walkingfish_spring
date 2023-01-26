@@ -407,3 +407,8 @@ footer {
 	font-size: 5em;
 	color: black;
   }
+
+  .no-result-alert h3 {
+	font-family: "Nougat";
+	font-size: 2em;
+  }
