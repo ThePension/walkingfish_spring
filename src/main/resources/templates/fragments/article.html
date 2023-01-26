@@ -1,5 +1,5 @@
 <div th:fragment="article-list" class="row">
-  <h1>Liste des article</h1>
+  <h1 class="page_title">Liste des articles</h1>
 
   <div class="card-container col-6 mb-4" th:each="article: ${articles}">
     <div class="card">
@@ -9,7 +9,8 @@
       <div class="images-carousels">
         <section
           th:id="'main-carousel' + ${article.id}"
-          class="splide main-carousels"
+          th:attr="article_id=  ${article.id}"
+          class="splide main-carousels main-carousel"
         >
           <div class="splide__track">
             <ul class="splide__list">
@@ -22,7 +23,7 @@
   
         <section
           th:id="'thumbnail-carousel' + ${article.id}"
-          class="splide thumbnail-carousels"
+          class="splide thumbnail-carousels thumbnail-carousel"
         >
           <div class="splide__track">
             <ul class="splide__list">

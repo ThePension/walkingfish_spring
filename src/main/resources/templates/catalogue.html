@@ -13,36 +13,66 @@
         <script>
           document.addEventListener( 'DOMContentLoaded', function () {
             // Get the main carousels id and thumbnail carousels id in a dict : {main id, thumbnail id}
-            
+            var carouselDict = {};
+
+            // Get all the carousels containers
+            var carousels_containers = document.querySelectorAll( '.images-carousels' );
+             
+            // Iterate through the carousels containers
+            for ( var i = 0; i < carousels_containers.length; i++ ) {
+              var carousel_container = carousels_containers[ i ];
+              var main_carousel = carousel_container.querySelector( '.main-carousel' );
+              var article_id = main_carousel.getAttribute("article_id");
+              var main_carousel_id = 'main-carousel' + article_id ;
+              var thumbnail_carousel_id = 'thumbnail-carousel' + article_id;
+              carouselDict[ main_carousel_id ] = thumbnail_carousel_id;
+            }
+
+            // Create a blank array of tuples
+            var carouselTuples = [];
+
             // Iterate through the carousel dict
-            
-            var thumbnails = new Splide( '#thumbnail-carousel102', {
-              fixedWidth : 100,
-              fixedHeight: 60,
-              gap        : 10,
-              rewind     : true,
-              pagination : false,
-              focus      : 'center',
-              isNavigation: true,
-              breakpoints: {
-                600: {
-                  fixedWidth : 60,
-                  fixedHeight: 44,
+            for ( var main_carousel_id in carouselDict ) {
+              var thumbnail_carousel_id = carouselDict[ main_carousel_id ];
+              main = new Splide( '#' + main_carousel_id, {
+                type      : 'fade',
+                fixedHeight: 400,
+                rewind    : true,
+                pagination: false,
+                arrows    : false,
+              } );
+
+              thumbnails = new Splide( '#' + thumbnail_carousel_id, {
+                fixedWidth : 100,
+                fixedHeight: 60,
+                gap        : 10,
+                rewind     : true,
+                pagination : false,
+                focus      : 'center',
+                isNavigation: true,
+                breakpoints: {
+                  600: {
+                    fixedWidth : 60,
+                    fixedHeight: 44,
+                  },
                 },
-              },
-            } ).mount();
+              } );
 
-            var main = new Splide( '#main-carousel102', {
-              type      : 'fade',
-              fixedHeight: 400,
-              rewind    : true,
-              pagination: false,
-              arrows    : false,
-            } );
+              // Add the main and thumbnail splide to the array
+              carouselTuples.push( [ main, thumbnails ] );
+            }
 
-            main.sync( thumbnails );
-            main.mount();
-            thumbnails.mount();
+            // Iterate through the array of tuples
+            for ( var i = 0; i < carouselTuples.length; i++ ) {
+              var carouselTuple = carouselTuples[ i ];
+              var main = carouselTuple[ 0 ];
+              var thumbnails = carouselTuple[ 1 ];
+
+              main.sync( thumbnails );
+              main.mount();
+              thumbnails.mount();
+            }
+            
           } );
         </script>
     </head>

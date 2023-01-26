@@ -399,3 +399,9 @@ footer {
   .main-carousels { 	
 	margin-bottom: 1em;
   }
+
+  .page_title {
+	font-family: "Nougat";
+	font-size: 5em;
+	color: black;
+  }
