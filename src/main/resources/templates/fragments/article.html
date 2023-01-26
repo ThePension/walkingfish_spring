@@ -1,7 +1,7 @@
 <div th:fragment="article-list" class="row">
   <h1 class="page_title">Liste des articles</h1>
 
-  <div class="card-container col-6 mb-4" th:each="article: ${articles}">
+  <div class="card-container col-lg-6 col-12 mb-4" th:each="article: ${articles}">
     <div class="card">
 
       <h4 class="card-title m-3" th:text="${article.name}"></h4>
