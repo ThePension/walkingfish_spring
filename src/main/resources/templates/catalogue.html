@@ -12,7 +12,11 @@
 
         <script>
           document.addEventListener( 'DOMContentLoaded', function () {
-            var thumbnails = new Splide( '#thumbnail-carousel', {
+            // Get the main carousels id and thumbnail carousels id in a dict : {main id, thumbnail id}
+            
+            // Iterate through the carousel dict
+            
+            var thumbnails = new Splide( '#thumbnail-carousel102', {
               fixedWidth : 100,
               fixedHeight: 60,
               gap        : 10,
@@ -28,7 +32,7 @@
               },
             } ).mount();
 
-            var main = new Splide( '#main-carousel', {
+            var main = new Splide( '#main-carousel102', {
               type      : 'fade',
               fixedHeight: 400,
               rewind    : true,

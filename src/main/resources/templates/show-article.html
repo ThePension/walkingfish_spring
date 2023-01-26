@@ -47,6 +47,15 @@
               Modifier l'article
             </button>
           </a>
+            <form
+              action="#"
+              th:action="@{/admin/delete}"
+              th:object="${article}"
+              method="post"
+            >
+              <input type="hidden" th:value="${article.id}" name="id" />
+              <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
         </div>
 
         <h1>Images de l'article</h1>

@@ -372,6 +372,11 @@ footer {
 	transform: scale(0.97);
 }
 
+/* ----- Card ----- */
+.card-container {
+	flex-flow: column wrap;
+}
+
 /* ----- Slider ----- */
 .splide__slide img {
 	width: 100%;

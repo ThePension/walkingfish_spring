@@ -144,5 +144,14 @@ public class CatalogueServiceTests {
       // Assert
       assertThat(picture).isNotNull();
       assertThat(result).isEqualTo(picture);
+
+      try {
+        catalogService.deletePictureInDB(picture.getId());
+        catalogService.deleteArticleInDB(article.getId());
+      } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+
   }
 }
