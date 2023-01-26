@@ -28,7 +28,7 @@
         <ul class="navbar-nav h4 me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link text-white" href="/"
-              >Accueil <span class="sr-only">(current)</span></a
+              >Accueil</a
             >
           </li>
           <li class="nav-item">
@@ -52,7 +52,7 @@
                   target="blank"
                   ><img
                     id="wf_logo"
-                    src="img/insta_logo.ico"
+                    src="/img/insta_logo.ico"
                     style="width: 32px; padding-right: 10px"
                   />Instagram</a
                 >
@@ -60,6 +60,22 @@
             </ul>
           </li>
         </ul>
+
+        <!--  **************** logout ****************** -->
+      <div
+        th:fragment="logout"
+        class="logout d-flex justify-content-end mr-4"
+        sec:authorize="isAuthenticated()"
+      >
+        <form action="#" th:action="@{/logout}" method="post" class="me-3">
+          <input class="btn btn-success" type="submit" value="Se déconnecter" />
+        </form>
+
+        <a class="btn btn-success me-3" href="/admin/create">
+          Ajouter un article
+        </a>
+      </div>
+
         <form class="d-flex" th:action="@{/catalogue}" method="GET">
           <input
             class="form-control me-2"
