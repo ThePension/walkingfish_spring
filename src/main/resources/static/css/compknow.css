@@ -12,6 +12,7 @@
 *{
 	font-weight: 75;
 }
+
 body{
 	position: relative;
   	min-height: 100vh;
@@ -393,10 +394,11 @@ footer {
   }
 
   .images-carousels {
-	width: 100%;
+	width: 95%;
+	margin: 0 auto;
   }
 
-  .main-carousels { 	
+  .main-carousels {
 	margin-bottom: 1em;
   }
 
