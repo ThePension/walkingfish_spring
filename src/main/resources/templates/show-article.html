@@ -11,6 +11,16 @@
 
     <script src="/js/jquery-3.6.3.min.js"></script>
     <title>WalkingFish</title>
+    <script>
+      $(document).ready(function () {
+        document.getElementById("delete-button").addEventListener("click", function(){
+          if(confirm("Êtes-vous sûr de vouloir supprimer cet article?")){
+            // Redirection vers la page de suppression de l'article
+            window.location.href = "/admin/delete/" + document.getElementById("id").value;
+          }
+        });
+      });
+    </script>
   </head>
   <body>
     <div th:replace="fragments/header :: header"></div>
@@ -51,6 +61,7 @@
               th:action="@{/admin/delete}"
               th:object="${article}"
               method="post"
+              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article?');"
             >
               <input type="hidden" th:value="${article.id}" name="id" />
               <button type="submit" class="btn btn-danger p-3">Supprimer</button>
@@ -95,6 +106,7 @@
             th:if="${isAdmin}"
             th:action="@{/admin/picture/delete}"
             method="post"
+            onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette image?');"
           >
             <input type="hidden" th:value="${picture.id}" name="picture_id" />
             <input type="hidden" th:value="${article.id}" name="article_id" />
