@@ -37,7 +37,7 @@ public class AdminController {
     @Autowired
     FileStorageService fileStorageService;
 
-    private final int pageSize = 6;
+    private final int pageSize = 3;
 
     /**
      * Show the catalogue
