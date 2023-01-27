@@ -152,6 +152,5 @@ public class CatalogueServiceTests {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-
   }
 }

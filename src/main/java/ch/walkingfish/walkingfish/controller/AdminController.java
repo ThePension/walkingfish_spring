@@ -198,9 +198,6 @@ public class AdminController {
     public String deleteArticleInDB(@ModelAttribute("id") Integer id, Model model) {
         Article article = null;
 
-        // TODO : Fix me !! Should be done automatically by the database (Delete
-        // Cascade)
-
         // Get the article from the database
         try {
             article = catalogService.getArticleById(id.longValue());

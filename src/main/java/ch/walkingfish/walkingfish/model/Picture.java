@@ -19,7 +19,7 @@ public class Picture {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "article_id", nullable = false)
+    @JoinColumn(name = "article_id")
     private Article article;
 
     public Picture() {
@@ -66,6 +66,7 @@ public class Picture {
     @Override
     public String toString() {
         return "Picture[article_id : " + this.article.getId() + "|this_id : " + this.id + "|this_url : " + this.url
+                + "|this_name : " + this.name
                 + "]";
     }
 
