@@ -13,6 +13,17 @@ import javax.persistence.OneToMany;
 @Entity
 public class Article {
 
+    public static final ArrayList<String> Sizes = new ArrayList<String>() {
+        {
+            add("XS");
+            add("S");
+            add("M");
+            add("L");
+            add("XL");
+            add("XXL");
+        }
+    };
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

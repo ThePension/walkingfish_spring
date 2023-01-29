@@ -139,6 +139,18 @@
       />
     </div>
 
+    <!-- Add a size picker -->
+    <div class="form-group">
+      <label for="sizes" th:text="Tailles"></label>
+      <select
+        class="form-select"
+        th:field="*{sizes}"
+        multiple
+        th:required="required"
+      >
+        <option th:each="size: ${sizes}" th:value="${size}" th:text="${size}"></option>
+      </select>
+
     <div th:if="${!isEdit}" class="form-group">
       <label for="pictures">Images de l'article:</label>
       <input type="file" id="images" name="images" multiple />
