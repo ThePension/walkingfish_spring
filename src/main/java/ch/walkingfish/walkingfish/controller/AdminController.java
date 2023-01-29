@@ -169,6 +169,7 @@ public class AdminController {
 
         model.addAttribute("isNew", Boolean.FALSE);
         model.addAttribute("isEdit", Boolean.TRUE);
+        model.addAttribute("sizes", Article.Sizes);
 
         return "new-article";
     }

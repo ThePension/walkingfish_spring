@@ -44,3 +44,6 @@ https://www.bezkoder.com/spring-boot-unit-test-jpa-repo-datajpatest/
 
 ### Carousel
 https://splidejs.com/tutorials/thumbnail-carousel/
+
+### Max file size
+https://spring.io/guides/gs/uploading-files/#:~:text=max%2Dfile%2Dsize%20is%20set,spring.
