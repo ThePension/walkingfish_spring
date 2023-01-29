@@ -1,6 +1,7 @@
 package ch.walkingfish.walkingfish.model;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ public class Article {
     private String description;
     private Double price;
     private String type;
+    private ArrayList<String> sizes;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
     private List<Picture> pictures;
@@ -26,11 +28,12 @@ public class Article {
     public Article() {
     }
 
-    public Article(String name, String description, Double price, String type) {
+    public Article(String name, String description, Double price, String type, ArrayList<String> sizes) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.type = type;
+        this.sizes = sizes;
     }
 
     public Long getId() {
@@ -71,6 +74,16 @@ public class Article {
 
     public String getType() {
         return type;
+    }
+
+    public void setSizes(ArrayList<String> sizes)
+    {
+        this.sizes = sizes;
+    }
+
+    public List<String> getSizes()
+    {
+        return this.sizes;
     }
 
     public List<Picture> getPictures() {

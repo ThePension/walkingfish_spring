@@ -60,6 +60,11 @@
           <p class="card-text" th:text="${article.type}"></p>
         </div>
 
+        <div class="article-component">
+          <h4>Tailles disponibles</h4>
+          <p class="card-text" th:each="size: ${article.sizes}" th:text="${size}"></p>
+        </div>
+
         <a sec:authorize="isAuthenticated()" th:href="@{/admin/show/{id}(id=${article.id})}">
           <button class="details-btn">Mettre à jour l'article</button>
         </a>

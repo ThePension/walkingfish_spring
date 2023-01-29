@@ -178,4 +178,18 @@ public class CatalogService {
 			throw new Exception("This picture does not exist");
 		}
 	}
+
+	/**
+	 * Delete all the pictures in the database
+	 */
+	public void deleteAllPictures() {
+		pictureRepository.deleteAll();
+	}
+
+	/**
+	 * Delete all the articles in the database
+	 */
+	public void deleteAllArticles() {
+		articleRepository.deleteAll();
+	}
 }

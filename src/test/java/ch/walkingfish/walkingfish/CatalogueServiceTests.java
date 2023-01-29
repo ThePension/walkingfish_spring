@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,8 +34,8 @@ public class CatalogueServiceTests {
   public void testGetAllArticles() {
       // Arrange
       List<Article> articles = Arrays.asList(
-              new Article("Bonnet", "Bonnet de laine", 10.0, "Bonnet"),
-              new Article("Veste", "Veste en cuir", 100.0, "Veste")
+              new Article("Bonnet", "Bonnet de laine", 10.0, "Bonnet", new ArrayList<String>()),
+              new Article("Veste", "Veste en cuir", 100.0, "Veste", new ArrayList<String>())
       );
 
       // Insert articles in database
@@ -50,7 +51,7 @@ public class CatalogueServiceTests {
   @Test
   public void testAddArticleToCatalogue()
   {
-    Article article = new Article("Veste", "Veste en cuir", 100.0, "Veste");
+    Article article = new Article("Veste", "Veste en cuir", 100.0, "Veste", new ArrayList<String>());
 
     // Insert article in database
     article = catalogService.addArticleToCatalog(article);
@@ -61,7 +62,7 @@ public class CatalogueServiceTests {
   @Test
   public void testGetArticleById() {
       // Arrange
-      Article article = new Article("Veste", "Veste en cuir", 100.0, "Veste");
+      Article article = new Article("Veste", "Veste en cuir", 100.0, "Veste", new ArrayList<String>());
 
       // Insert article in database
       article = catalogService.addArticleToCatalog(article);
@@ -81,7 +82,7 @@ public class CatalogueServiceTests {
   @Test
   public void testUpdateArticleInDB() {
       // Arrange
-      Article article = new Article("Veste", "Veste en cuir", 100.0, "Veste");
+      Article article = new Article("Veste", "Veste en cuir", 100.0, "Veste", new ArrayList<String>());
 
       // Insert article in database
       article = catalogService.addArticleToCatalog(article);
@@ -97,7 +98,7 @@ public class CatalogueServiceTests {
   @Test
   public void testDeleteArticleInDB() {
       // Arrange
-      Article article = new Article("Veste", "Veste en cuir", 100.0, "Veste");
+      Article article = new Article("Veste", "Veste en cuir", 100.0, "Veste", new ArrayList<String>());
 
       // Insert article in database
       article = catalogService.addArticleToCatalog(article);
@@ -121,7 +122,7 @@ public class CatalogueServiceTests {
   @Test
   public void testSavePicture() {
       // Arrange
-      Article article = new Article("Veste", "Veste en cuir", 100.0, "Veste");
+      Article article = new Article("Veste", "Veste en cuir", 100.0, "Veste", new ArrayList<String>());
 
       // Insert article in database
       article = catalogService.addArticleToCatalog(article);
