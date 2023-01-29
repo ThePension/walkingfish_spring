@@ -9,65 +9,82 @@
   </div>
 
   <div
-    class="card-container col-lg-4 col-md-6 col-sm-12 mb-4"
+    class="card-container col-lg-6 col-md-12 mb-4"
     th:each="article: ${articles}"
   >
     <div class="card">
-      <h4 class="card-title m-3" th:text="${article.name}"></h4>
+      <h4 class="card-title ms-4 mt-4" th:text="${article.name}"></h4>
 
-      <div class="images-carousels">
-        <section
-          th:id="'main-carousel' + ${article.id}"
-          th:attr="article_id=  ${article.id}"
-          class="splide main-carousels main-carousel"
-        >
-          <div class="splide__track">
-            <ul class="splide__list">
-              <li class="splide__slide" th:each="picture: ${article.pictures}">
-                <img th:src="${picture.url}" />
-              </li>
+      <div class="row">
+        <div class="images-carousels col-md-5 col-sm-12 ms-4 mt-4 mb-4">
+          <section
+            th:id="'main-carousel' + ${article.id}"
+            th:attr="article_id=  ${article.id}"
+            class="splide main-carousels main-carousel"
+          >
+            <div class="splide__track">
+              <ul class="splide__list">
+                <li
+                  class="splide__slide"
+                  th:each="picture: ${article.pictures}"
+                >
+                  <img th:src="${picture.url}" />
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <section
+            th:id="'thumbnail-carousel' + ${article.id}"
+            class="splide thumbnail-carousels thumbnail-carousel"
+          >
+            <div class="splide__track">
+              <ul class="splide__list">
+                <li
+                  class="splide__slide"
+                  th:each="picture: ${article.pictures}"
+                >
+                  <img th:src="${picture.url}" />
+                </li>
+              </ul>
+            </div>
+          </section>
+        </div>
+
+        <div class="card-body col-md-5 col-sm-12">
+          <div class="article-component">
+            <h4>Description</h4>
+            <p class="card-text" th:text="${article.description}"></p>
+          </div>
+
+          <div class="article-component">
+            <h4>CHF</h4>
+            <p class="card-text price" th:text="${article.price}"></p>
+          </div>
+
+          <div class="article-component">
+            <h4>Type</h4>
+            <p class="card-text" th:text="${article.type}"></p>
+          </div>
+
+          <div class="article-component">
+            <h4>Tailles disponibles</h4>
+            <ul class="size-list">
+              <li
+                class="size-item"
+                th:each="size: ${article.sizes}"
+                th:text="${size}"
+              ></li>
             </ul>
           </div>
-        </section>
 
-        <section
-          th:id="'thumbnail-carousel' + ${article.id}"
-          class="splide thumbnail-carousels thumbnail-carousel"
-        >
-          <div class="splide__track">
-            <ul class="splide__list">
-              <li class="splide__slide" th:each="picture: ${article.pictures}">
-                <img th:src="${picture.url}" />
-              </li>
-            </ul>
-          </div>
-        </section>
-      </div>
-
-      <div class="card-body">
-        <div class="article-component">
-          <h4>Description</h4>
-          <p class="card-text" th:text="${article.description}"></p>
+          <a
+            sec:authorize="isAuthenticated()"
+            th:href="@{/admin/show/{id}(id=${article.id})}"
+          >
+            <button class="details-btn">Mettre à jour l'article</button>
+          </a>
         </div>
-
-        <div class="article-component">
-          <h4>CHF</h4>
-          <p class="card-text price" th:text="${article.price}"></p>
-        </div>
-
-        <div class="article-component">
-          <h4>Type</h4>
-          <p class="card-text" th:text="${article.type}"></p>
-        </div>
-
-        <div class="article-component">
-          <h4>Tailles disponibles</h4>
-          <p class="card-text" th:each="size: ${article.sizes}" th:text="${size}"></p>
-        </div>
-
-        <a sec:authorize="isAuthenticated()" th:href="@{/admin/show/{id}(id=${article.id})}">
-          <button class="details-btn">Mettre à jour l'article</button>
-        </a>
       </div>
     </div>
   </div>
@@ -148,8 +165,13 @@
         multiple
         th:required="required"
       >
-        <option th:each="size: ${sizes}" th:value="${size}" th:text="${size}"></option>
+        <option
+          th:each="size: ${sizes}"
+          th:value="${size}"
+          th:text="${size}"
+        ></option>
       </select>
+    </div>
 
     <div th:if="${!isEdit}" class="form-group">
       <label for="pictures">Images de l'article:</label>

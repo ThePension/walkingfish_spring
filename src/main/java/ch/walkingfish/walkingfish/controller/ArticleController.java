@@ -25,7 +25,7 @@ public class ArticleController {
     @Autowired
     CatalogService catalogService;
 
-    private final int pageSize = 3;
+    private final int pageSize = 4;
 
     /**
      * Show the catalogue

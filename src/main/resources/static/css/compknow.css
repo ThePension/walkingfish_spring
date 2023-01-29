@@ -158,8 +158,8 @@ footer {
 }
 
 .pagination-button {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   background-color: #fff;
   color: #bd9c77;
   border: none;
@@ -167,7 +167,7 @@ footer {
   margin: 0 10px; /* Space between buttons */
   cursor: pointer;
   transition: background-color 0.2s;
-  font-size: 30px;
+  font-size: 20px;
   border: 2px solid #bd9c77;
   border-radius: 10%;
 }
@@ -245,8 +245,18 @@ footer {
 }
 
 .images-carousels {
-  width: 95%;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+  .images-carousels {
+    width: 90% !important;
+    margin-right: 20px !important;
+  }
+
+  .article-component {
+    margin-left: 20px !important;
+  }
 }
 
 .main-carousels {
@@ -255,7 +265,7 @@ footer {
 
 .page_title {
   font-family: "Nougat";
-  font-size: 5em;
+  font-size: 3em;
   color: black;
 }
 
@@ -265,37 +275,27 @@ footer {
 }
 
 .article-component {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	margin: 2em 0;
+  margin-bottom: 20px;
 }
 
-/* Select first child of .article-component */
-.article-component > :first-child {
-	width: 30%;
+/* ----- Article sizes ----- */
+.size-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-/* Select second child of .article-component */
-.article-component > :nth-child(2) {
-	align-items: center;
-	width: 70%;
+.size-item {
+  background-color: #BD9C77;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 10px;
+  padding: 5px 12px;
+  text-align: center;
 }
 
-/* Select .article-component children */
-.article-component > * {
-	
-	font-size: 1em;
-}
-
-/* If screen width is less than 768px */
-@media screen and (max-width: 768px) {
-	.article-component {
-		flex-direction: column;
-	}
-
-	/* Select .article-component children */
-	.article-component > * {
-		width: 100%;
-	}
-}

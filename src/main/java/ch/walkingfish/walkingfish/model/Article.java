@@ -21,6 +21,7 @@ public class Article {
             add("L");
             add("XL");
             add("XXL");
+            add("Taille unique");
         }
     };
 
