@@ -78,113 +78,126 @@
             </ul>
           </div>
 
-          <a
-            sec:authorize="isAuthenticated()"
-            th:href="@{/admin/show/{id}(id=${article.id})}"
-          >
-            <button class="details-btn">Mettre à jour l'article</button>
-          </a>
+          <!-- Display coloris -->
+          <div class="article-component">
+            <h4>Couleurs disponibles</h4>
+            <ul class="color-list">
+              <li
+                class="color-item"
+                th:each="color: ${article.coloris}"
+                th:style="'background-color: ' + ${color.hexa}"
+              ></li>
+            </ul>
+          </div>
+
+            <a
+              sec:authorize="isAuthenticated()"
+              th:href="@{/admin/show/{id}(id=${article.id})}"
+            >
+              <button class="details-btn">Mettre à jour l'article</button>
+            </a>
+          </div>
         </div>
       </div>
     </div>
+
+    <div th:if="${articles.totalPages} > 1" class="pagination-container">
+      <a
+        th:each="pageNumber : ${pageNumbers}"
+        th:href="@{/catalogue(search=${search}, page=${pageNumber})}"
+        th:text="${pageNumber}"
+        class="pagination-button"
+        th:classappend="${pageNumber==articles.number + 1} ? active"
+      ></a>
+    </div>
   </div>
 
-  <div th:if="${articles.totalPages} > 1" class="pagination-container">
-    <a
-      th:each="pageNumber : ${pageNumbers}"
-      th:href="@{/catalogue(search=${search}, page=${pageNumber})}"
-      th:text="${pageNumber}"
-      class="pagination-button"
-      th:classappend="${pageNumber==articles.number + 1} ? active"
-    ></a>
+  <div th:fragment="new-article">
+    <h1 th:if="${isNew}">Insertion d'un article</h1>
+    <h1 th:if="${isEdit}">Modification d'un article</h1>
+
+    <form
+      action="#"
+      th:action="${isNew} ? @{/admin/save} : @{/admin/update}"
+      th:object="${article}"
+      enctype="multipart/form-data"
+      method="post"
+    >
+      <input th:if="${isEdit}" type="number" hidden th:field="*{id}" />
+
+      <div class="form-group">
+        <label for="name" th:text="Nom"></label>
+        <input
+          type="text"
+          class="form-control"
+          th:required="required"
+          th:field="*{name}"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="name" th:text="Description"></label>
+        <input
+          type="text"
+          class="form-control"
+          th:required="required"
+          th:field="*{description}"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="price" th:text="Prix"></label>
+        <input
+          type="number"
+          min="0"
+          value="0"
+          step="0.05"
+          class="form-control"
+          th:required="required"
+          th:field="*{price}"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="type" th:text="Type"></label>
+        <input
+          type="text"
+          class="form-control"
+          th:required="required"
+          th:field="*{type}"
+        />
+      </div>
+
+      <!-- Add a size picker -->
+      <div class="form-group">
+        <label for="sizes" th:text="Tailles"></label>
+        <select
+          class="form-select"
+          th:field="*{sizes}"
+          multiple
+          th:required="required"
+        >
+          <option
+            th:each="size: ${sizes}"
+            th:value="${size}"
+            th:text="${size}"
+          ></option>
+        </select>
+      </div>
+
+      <div th:if="${!isEdit}" class="form-group">
+        <label for="pictures">Images de l'article:</label>
+        <input type="file" id="images" name="images" multiple />
+      </div>
+
+      <div id="image-preview"></div>
+
+      <button th:if="${isNew}" type="submit" class="btn btn-primary">
+        Créer l'article
+      </button>
+      <button th:if="${isEdit}" type="submit" class="btn btn-primary">
+        Modifier l'article
+      </button>
+    </form>
   </div>
-</div>
-
-<div th:fragment="new-article">
-  <h1 th:if="${isNew}">Insertion d'un article</h1>
-  <h1 th:if="${isEdit}">Modification d'un article</h1>
-
-  <form
-    action="#"
-    th:action="${isNew} ? @{/admin/save} : @{/admin/update}"
-    th:object="${article}"
-    enctype="multipart/form-data"
-    method="post"
-  >
-    <input th:if="${isEdit}" type="number" hidden th:field="*{id}" />
-
-    <div class="form-group">
-      <label for="name" th:text="Nom"></label>
-      <input
-        type="text"
-        class="form-control"
-        th:required="required"
-        th:field="*{name}"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="name" th:text="Description"></label>
-      <input
-        type="text"
-        class="form-control"
-        th:required="required"
-        th:field="*{description}"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="price" th:text="Prix"></label>
-      <input
-        type="number"
-        min="0"
-        value="0"
-        step="0.05"
-        class="form-control"
-        th:required="required"
-        th:field="*{price}"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="type" th:text="Type"></label>
-      <input
-        type="text"
-        class="form-control"
-        th:required="required"
-        th:field="*{type}"
-      />
-    </div>
-
-    <!-- Add a size picker -->
-    <div class="form-group">
-      <label for="sizes" th:text="Tailles"></label>
-      <select
-        class="form-select"
-        th:field="*{sizes}"
-        multiple
-        th:required="required"
-      >
-        <option
-          th:each="size: ${sizes}"
-          th:value="${size}"
-          th:text="${size}"
-        ></option>
-      </select>
-    </div>
-
-    <div th:if="${!isEdit}" class="form-group">
-      <label for="pictures">Images de l'article:</label>
-      <input type="file" id="images" name="images" multiple />
-    </div>
-
-    <div id="image-preview"></div>
-
-    <button th:if="${isNew}" type="submit" class="btn btn-primary">
-      Créer l'article
-    </button>
-    <button th:if="${isEdit}" type="submit" class="btn btn-primary">
-      Modifier l'article
-    </button>
-  </form>
 </div>

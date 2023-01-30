@@ -22,43 +22,84 @@ public class Picture {
     @JoinColumn(name = "article_id")
     private Article article;
 
+    /**
+     * Default constructor
+     */
     public Picture() {
     }
 
+    /**
+     * Constructor
+     * @param url url of the picture
+     * @param name name of the picture
+     * @param article the article
+     */
     public Picture(String url, String name, Article article) {
         this.url = url;
         this.name = name;
         this.article = article;
     }
 
+    /**
+     * Get the article
+     * @return the article
+     */
     public Article getArticle() {
         return this.article;
     }
 
+    /**
+     * Set the article
+     * @param article the article
+     */
     public void setArticle(Article article) {
         this.article = article;
     }
 
+    /**
+     * Get the id
+     * @return the id
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Set the id
+     * @param id the id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Get the url
+     * @return the url
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Set the url
+     * @param url the url
+     */
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * Get the name
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set the name
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }

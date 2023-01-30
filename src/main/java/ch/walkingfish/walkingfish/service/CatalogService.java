@@ -38,6 +38,11 @@ public class CatalogService {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @param pageable the page to display
+	 * @return the article
+	 */
 	public Page<Article> findPaginated(Pageable pageable) {
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
@@ -58,6 +63,12 @@ public class CatalogService {
 		return bookPage;
 	}
 
+	/**
+	 * 
+	 * @param pageable
+	 * @param search
+	 * @return
+	 */
 	public Page<Article> findPaginatedAndFiltered(Pageable pageable, String search) {
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
@@ -123,6 +134,23 @@ public class CatalogService {
 	 * @param article the article to delete
 	 */
 	public void deleteArticleInDB(Article article) {
+		// Delete attached pictures
+		List<Picture> pictures = article.getPictures();
+
+		if (pictures != null) {
+			pictures.forEach(p -> pictureRepository.delete(p));
+		}
+
+		// Remove references to coloris
+		List<Colori> coloris = article.getColoris();
+
+		if (coloris != null) {
+			coloris.stream()//
+					.map(Colori::getArticles)
+					.filter(c -> c != null) //
+					.forEach(c -> c.remove(article));
+		}
+
 		articleRepository.delete(article);
 	}
 
@@ -132,6 +160,28 @@ public class CatalogService {
 	 * @param id the id of the article to delete
 	 */
 	public void deleteArticleInDB(Long id) {
+		Optional<Article> article = articleRepository.findById(id);
+
+		if (article.isPresent()) {
+			// Delete attached pictures
+			List<Picture> pictures = article.get().getPictures();
+
+			if (pictures != null) {
+				pictures.forEach(p -> pictureRepository.delete(p));
+			}
+
+			// Remove references to coloris
+			List<Colori> coloris = article.get().getColoris();
+
+			if (coloris != null) {
+				coloris.stream()//
+						.map(Colori::getArticles)
+						.filter(c -> c != null) //
+						.forEach(c -> c.remove(article.get()));
+			}
+		}
+
+		// Delete the article
 		articleRepository.deleteById(id);
 	}
 
@@ -183,13 +233,30 @@ public class CatalogService {
 	 * Delete all the pictures in the database
 	 */
 	public void deleteAllPictures() {
-		pictureRepository.deleteAll();
+		pictureRepository.findAll().forEach(p -> {
+			try {
+				deletePictureInDB(p.getId());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 	}
 
 	/**
 	 * Delete all the articles in the database
 	 */
 	public void deleteAllArticles() {
-		articleRepository.deleteAll();
+		// Get all the articles
+		List<Article> articles = getAllArticlesFromCatalog();
+
+		// Delete all references to coloris
+		articles.forEach(a -> a.getColoris().forEach(c -> c.getArticles().clear()));
+
+		// Delete all references to pictures
+		articles.forEach(a -> a.getPictures().forEach(p -> p.setArticle(null)));
+
+		// Delete all the articles
+		articles.forEach(a -> deleteArticleInDB(a));
 	}
 }

@@ -7,8 +7,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import ch.walkingfish.walkingfish.model.Article;
+import ch.walkingfish.walkingfish.model.Colori;
 import ch.walkingfish.walkingfish.model.Picture;
 import ch.walkingfish.walkingfish.service.CatalogService;
+import ch.walkingfish.walkingfish.service.ColoriService;
 
 @Component
 public class CatalogSeeder implements CommandLineRunner {
@@ -16,10 +18,16 @@ public class CatalogSeeder implements CommandLineRunner {
     @Autowired
     private CatalogService catalogService;
 
+    @Autowired
+    private ColoriService coloriService;
+
     @Override
     public void run(String... args) throws Exception {
         // Clean the database
         cleanDatabase();
+
+        // Seed the coloris
+        seedColoris();
 
         // Seed the catalog
         seedArticles();
@@ -34,6 +42,21 @@ public class CatalogSeeder implements CommandLineRunner {
 
         // Delete all articles
         catalogService.deleteAllArticles();
+
+        // Delete all coloris
+        coloriService.deleteAllColori();
+    }
+
+    private void seedColoris()
+    {
+        // Create 10 coloris
+        for (int i = 0; i < 10; i++) {
+            // Create a colori with random hexa color
+            Colori colori = new Colori("Colori " + i, "#" + Integer.toHexString((int) (Math.random() * 0x1000000)));
+
+            // Save the colori
+            coloriService.addColori(colori);
+        }
     }
 
     /**
@@ -46,11 +69,18 @@ public class CatalogSeeder implements CommandLineRunner {
         ArrayList<String> bonnet_sizes = new ArrayList<String>();
         bonnet_sizes.add("Taille unique");
 
+        // Get the coloris
+        ArrayList<Colori> coloris = (ArrayList<Colori>) coloriService.getAllColori();
+
         // Create 10 articles : Bonnet vert
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
+            // Select random coloris
+            ArrayList<Colori> article_coloris = new ArrayList<Colori>();
+            article_coloris.add(coloris.get((int) (Math.random() * coloris.size())));
+
             // Create an article
             Article article = new Article("Bonnet vert",
-                    "Bonnet vert en laine. Idéal pour les froides journées d'hiver.", 20d, "Bonnet", bonnet_sizes);
+                    "Bonnet vert en laine. Idéal pour les froides journées d'hiver.", 20d, "Bonnet", bonnet_sizes, article_coloris);
 
             // Save the article
             article = catalogService.addArticleToCatalog(article);
@@ -80,10 +110,18 @@ public class CatalogSeeder implements CommandLineRunner {
         tshirt_sizes.add("XL");
 
         // Create 10 articles : T-Shirt rouge
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
+            // Select random coloris
+            ArrayList<Colori> article_coloris = new ArrayList<Colori>();
+            article_coloris.add(coloris.get((int) (Math.random() * coloris.size())));
+            article_coloris.add(coloris.get((int) (Math.random() * coloris.size())));
+            article_coloris.add(coloris.get((int) (Math.random() * coloris.size())));
+            article_coloris.add(coloris.get((int) (Math.random() * coloris.size())));
+            article_coloris.add(coloris.get((int) (Math.random() * coloris.size())));
+
             // Create an article
             Article article = new Article("T-Shirt rouge",
-                    "T-Shirt rouge en coton. Idéal pour les chaudes journées d'été.", 15d, "T-Shirt", tshirt_sizes);
+                    "T-Shirt rouge en coton. Idéal pour les chaudes journées d'été.", 15d, "T-Shirt", tshirt_sizes, article_coloris);
 
             // Save the article
             article = catalogService.addArticleToCatalog(article);
