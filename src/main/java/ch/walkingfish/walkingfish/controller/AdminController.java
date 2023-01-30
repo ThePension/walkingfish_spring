@@ -321,4 +321,17 @@ public class AdminController {
 
         return "coloris";
     }
+
+    @PostMapping(value = "/colori/delete")
+    public String deletePictureInDB(@ModelAttribute("id") Integer id, Model model) {
+        try {
+            coloriService.deleteColori(id.longValue());
+        } catch (Exception e) {
+            model.addAttribute("errors", "Une erreur est survenue lors de la suppression du colori");
+            e.printStackTrace();
+            return "redirect:/admin/coloris";
+        }
+
+        return "redirect:/admin/coloris";
+    }
 }

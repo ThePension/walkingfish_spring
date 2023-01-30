@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ch.walkingfish.walkingfish.repository.ArticleRepository;
 import ch.walkingfish.walkingfish.repository.ColoriRepository;
 import ch.walkingfish.walkingfish.model.Colori;
 
@@ -14,8 +15,12 @@ public class ColoriService {
     @Autowired
     private ColoriRepository coloriRepository;
 
+    @Autowired
+    private ArticleRepository articleRepository;
+
     /**
      * Return all the colori
+     * 
      * @return the list of colori
      */
     public List<Colori> getAllColori() {
@@ -27,6 +32,7 @@ public class ColoriService {
 
     /**
      * Return the colori by the id
+     * 
      * @param id the id of the colori
      * @return the colori
      */
@@ -36,6 +42,7 @@ public class ColoriService {
 
     /**
      * Add a new colori
+     * 
      * @param colori the colori to add
      */
     public void addColori(Colori colori) {
@@ -44,6 +51,7 @@ public class ColoriService {
 
     /**
      * Update the colori
+     * 
      * @param colori the colori to update
      */
     public void updateColori(Colori colori) {
@@ -57,14 +65,25 @@ public class ColoriService {
     public void deleteColori(long id) {
         // Remove all references to this colori
         Colori colori = getColoriById(id);
-        colori.getArticles().forEach(a -> a.removeColori(colori));
-        colori.getArticles().clear();
+
+        // // Remove all the references
+        // colori.getArticles().forEach(a -> {
+        //     a.removeColori(colori);
+        //     // catalogService.updateArticleInDB(a);
+        //     articleRepository.save(a);
+        // });
+
+        // // Remove all the references
+        // colori.getArticles().clear();
+
+        // updateColori(colori);
 
         coloriRepository.deleteById(id);
     }
 
     /**
      * Return the colori by the name
+     * 
      * @param name the name of the colori
      * @return the colori
      */
@@ -74,6 +93,7 @@ public class ColoriService {
 
     /**
      * Return the colori by the hexa code
+     * 
      * @param hexa the hexa code
      * @return the colori
      */
@@ -85,15 +105,13 @@ public class ColoriService {
      * Delete all the colori
      */
     public void deleteAllColori() {
-        // Get all the colori
-        List<Colori> colori = getAllColori();
+        // Get all coloris
+        List<Colori> coloris = new ArrayList<Colori>(getAllColori());
 
-        // Delete all references to articles
-        colori.stream()//
-            .filter(c -> c.getArticles() != null)//
-            .forEach(c -> c.getArticles().clear());
+        for (Colori colori : coloris) {
+            deleteColori(colori.getId());
+        }
 
-        // Delete all the colori
-        colori.forEach(c -> deleteColori(c.getId()));
+        // coloriRepository.deleteAll();
     }
 }

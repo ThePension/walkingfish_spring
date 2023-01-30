@@ -47,8 +47,7 @@ public class CatalogSeeder implements CommandLineRunner {
         coloriService.deleteAllColori();
     }
 
-    private void seedColoris()
-    {
+    private void seedColoris() {
         // Create 10 coloris
         for (int i = 0; i < 10; i++) {
             // Create a colori with random hexa color
@@ -61,8 +60,8 @@ public class CatalogSeeder implements CommandLineRunner {
 
     /**
      * Seed the catalog
-     *  - Create 4 articles : Bonnet vert
-     *  - Create 4 articles : T-Shirt rouge
+     * - Create 4 articles : Bonnet vert
+     * - Create 4 articles : T-Shirt rouge
      */
     private void seedArticles() {
         // Create an list of sizes for the article
@@ -80,10 +79,17 @@ public class CatalogSeeder implements CommandLineRunner {
 
             // Create an article
             Article article = new Article("Bonnet vert",
-                    "Bonnet vert en laine. Idéal pour les froides journées d'hiver.", 20d, "Bonnet", bonnet_sizes, article_coloris);
+                    "Bonnet vert en laine. Idéal pour les froides journées d'hiver.", 20d, "Bonnet", bonnet_sizes,
+                    article_coloris);
 
             // Save the article
             article = catalogService.addArticleToCatalog(article);
+
+            // Update coloris article list
+            for (Colori colori : article_coloris) {
+                colori.getArticles().add(article);
+                coloriService.updateColori(colori);
+            }
 
             // Create some pictures
             Picture picture1 = new Picture("/articlesImages/bonnet_vert1.jpeg", "bonnet_vert1.jpeg", article);
@@ -121,7 +127,8 @@ public class CatalogSeeder implements CommandLineRunner {
 
             // Create an article
             Article article = new Article("T-Shirt rouge",
-                    "T-Shirt rouge en coton. Idéal pour les chaudes journées d'été.", 15d, "T-Shirt", tshirt_sizes, article_coloris);
+                    "T-Shirt rouge en coton. Idéal pour les chaudes journées d'été.", 15d, "T-Shirt", tshirt_sizes,
+                    article_coloris);
 
             // Save the article
             article = catalogService.addArticleToCatalog(article);

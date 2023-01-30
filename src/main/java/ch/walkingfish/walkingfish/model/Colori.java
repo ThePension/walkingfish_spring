@@ -1,8 +1,10 @@
 package ch.walkingfish.walkingfish.model;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,9 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.PreRemove;
 
 @Entity
-public class Colori {
+public class Colori {    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -20,8 +23,7 @@ public class Colori {
     private String name;
     private String hexa;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "coloris")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "coloris")
     private Set<Article> articles;
 
     /**
@@ -32,6 +34,7 @@ public class Colori {
 
     /**
      * Constructor
+     * 
      * @param name name of the color
      * @param hexa hexa code of the color
      */
@@ -40,8 +43,18 @@ public class Colori {
         this.hexa = hexa;
     }
 
+    @PreRemove
+    public void removeReferences() {
+        for (Article article : articles) {
+            article.removeColori(this);
+        }
+
+        this.articles.clear();
+    }
+
     /**
      * Get the articles
+     * 
      * @return the articles
      */
     public Set<Article> getArticles() {
@@ -50,6 +63,7 @@ public class Colori {
 
     /**
      * Set the articles
+     * 
      * @param articles the articles
      */
     public void setArticles(Set<Article> articles) {
@@ -58,6 +72,7 @@ public class Colori {
 
     /**
      * Add an article
+     * 
      * @param article the article
      */
     public void addArticle(Article article) {
@@ -66,6 +81,16 @@ public class Colori {
 
     /**
      * Remove an article
+     * 
+     * @param article the article
+     */
+    public void removeArticle(Article article) {
+        this.articles.remove(article);
+    }
+
+    /**
+     * Remove an article
+     * 
      * @return the article
      */
     public Long getId() {
@@ -74,6 +99,7 @@ public class Colori {
 
     /**
      * Set the id
+     * 
      * @param id the id
      */
     public void setId(Long id) {
@@ -82,6 +108,7 @@ public class Colori {
 
     /**
      * Get the name
+     * 
      * @return the name
      */
     public String getName() {
@@ -90,6 +117,7 @@ public class Colori {
 
     /**
      * Set the name
+     * 
      * @param name the name
      */
     public void setName(String name) {
@@ -98,6 +126,7 @@ public class Colori {
 
     /**
      * Get the hexa code
+     * 
      * @return the hexa code
      */
     public String getHexa() {
@@ -106,6 +135,7 @@ public class Colori {
 
     /**
      * Set the hexa code
+     * 
      * @param hexa the hexa code
      */
     public void setHexa(String hexa) {
@@ -138,28 +168,10 @@ public class Colori {
 
         Colori other = (Colori) obj;
 
-        if (articles == null) {
-            if (other.articles != null)
-                return false;
-        } else if (!articles.equals(other.articles))
+        if (!this.name.equals(other.name))
             return false;
 
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-
-        if (hexa == null) {
-            if (other.hexa != null)
-                return false;
-        } else if (!hexa.equals(other.hexa))
+        if (!this.hexa.equals(other.hexa))
             return false;
 
         return true;

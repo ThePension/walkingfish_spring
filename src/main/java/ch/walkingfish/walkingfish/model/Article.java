@@ -14,6 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 public class Article {
@@ -30,22 +34,6 @@ public class Article {
         }
     };
 
-    public static final ArrayList<String> COLORIS_HEXA = new ArrayList<String>() {
-        {
-            add("Noir");
-            add("Blanc");
-            add("Gris");
-            add("Bleu");
-            add("Vert");
-            add("Rouge");
-            add("Jaune");
-            add("Rose");
-            add("Orange");
-            add("Marron");
-            add("Multicolore");
-        }
-    };
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -55,12 +43,15 @@ public class Article {
     private String type;
     private ArrayList<String> sizes;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "article_colori", joinColumns = {@JoinColumn(
-            name = "article_id")}, inverseJoinColumns = {@JoinColumn(name = "colori_id")})
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany
+    @JoinTable(name = "article_colori", 
+            joinColumns = {@JoinColumn(name = "article_id")}, 
+            inverseJoinColumns = {@JoinColumn(name = "colori_id")})
     private List<Colori> coloris;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Picture> pictures;
 
     /**
@@ -87,6 +78,19 @@ public class Article {
         this.type = type;
         this.sizes = sizes;
         this.coloris = coloris;
+
+        for (Colori colori : coloris) {
+            colori.getArticles().add(this);
+        }
+    }
+
+    @PreRemove
+    public void removeReferences() {
+        for (Colori colori : coloris) {
+            colori.getArticles().remove(this);
+        }
+        
+        this.coloris.clear();
     }
 
     /**
@@ -212,6 +216,7 @@ public class Article {
      */
     public void addColori(Colori colori) {
         this.coloris.add(colori);
+        colori.addArticle(this);
     }
 
     /**
@@ -220,6 +225,7 @@ public class Article {
      */
     public void removeColori(Colori colori) {
         this.coloris.remove(colori);
+        // colori.removeArticle(this);
     }
 
     /**

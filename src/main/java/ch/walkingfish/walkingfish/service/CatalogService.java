@@ -1,6 +1,7 @@
 package ch.walkingfish.walkingfish.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ch.walkingfish.walkingfish.repository.ArticleRepository;
 import ch.walkingfish.walkingfish.repository.PictureRepository;
@@ -25,6 +27,9 @@ public class CatalogService {
 
 	@Autowired
 	PictureRepository pictureRepository;
+
+	@Autowired
+	ColoriService coloriService;
 
 	/**
 	 * Return all the articles in the catalog
@@ -134,24 +139,7 @@ public class CatalogService {
 	 * @param article the article to delete
 	 */
 	public void deleteArticleInDB(Article article) {
-		// Delete attached pictures
-		List<Picture> pictures = article.getPictures();
-
-		if (pictures != null) {
-			pictures.forEach(p -> pictureRepository.delete(p));
-		}
-
-		// Remove references to coloris
-		List<Colori> coloris = article.getColoris();
-
-		if (coloris != null) {
-			coloris.stream()//
-					.map(Colori::getArticles)
-					.filter(c -> c != null) //
-					.forEach(c -> c.remove(article));
-		}
-
-		articleRepository.delete(article);
+		this.deleteArticleInDB(article.getId());
 	}
 
 	/**
@@ -159,30 +147,35 @@ public class CatalogService {
 	 * 
 	 * @param id the id of the article to delete
 	 */
+	@Transactional
 	public void deleteArticleInDB(Long id) {
 		Optional<Article> article = articleRepository.findById(id);
 
 		if (article.isPresent()) {
 			// Delete attached pictures
-			List<Picture> pictures = article.get().getPictures();
+			// article.get().getPictures().clear();
 
-			if (pictures != null) {
-				pictures.forEach(p -> pictureRepository.delete(p));
-			}
+			// if (pictures != null) {
+			// 	pictures.forEach(p -> pictureRepository.delete(p));
+			// }
 
 			// Remove references to coloris
-			List<Colori> coloris = article.get().getColoris();
+			// article.get().getColoris().clear();
 
-			if (coloris != null) {
-				coloris.stream()//
-						.map(Colori::getArticles)
-						.filter(c -> c != null) //
-						.forEach(c -> c.remove(article.get()));
-			}
-		}
+			// if (coloris != null) {
+			// 	coloris.stream()//
+			// 			.map(Colori::getArticles)
+			// 			.filter(c -> c != null) //
+			// 			.peek(c -> c.remove(article.get()))
+			// 			.flatMap(Collection::stream)//
+			// 			.peek(this::updateArticleInDB);
 
-		// Delete the article
+				// Save the coloris
+				// coloris.forEach(c -> coloriService.updateColori(c));			
+			// }
+			// Delete the article
 		articleRepository.deleteById(id);
+		}
 	}
 
 	/**
@@ -250,13 +243,14 @@ public class CatalogService {
 		// Get all the articles
 		List<Article> articles = getAllArticlesFromCatalog();
 
-		// Delete all references to coloris
-		articles.forEach(a -> a.getColoris().forEach(c -> c.getArticles().clear()));
-
-		// Delete all references to pictures
-		articles.forEach(a -> a.getPictures().forEach(p -> p.setArticle(null)));
-
 		// Delete all the articles
-		articles.forEach(a -> deleteArticleInDB(a));
+		articles.forEach(a -> {
+			try {
+				deleteArticleInDB(a.getId());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 	}
 }

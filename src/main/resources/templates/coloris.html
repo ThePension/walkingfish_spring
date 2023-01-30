@@ -1,30 +1,55 @@
-
 <!DOCTYPE html>
-<html lang="fr" >
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-        <link href="/css/compknow.css" rel="stylesheet" type="text/css"/>
-        <link href="/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="/css/splide.min.css">
-        <title>WalkingFish</title>
-    </head>
-    <body>                 
-      <div th:replace="fragments/header :: header"></div>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <link href="/css/compknow.css" rel="stylesheet" type="text/css" />
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/splide.min.css" />
+    <title>WalkingFish</title>
+  </head>
+  <body>
+    <div th:replace="fragments/header :: header"></div>
 
-      <!--Conteneur de la page-->
-      <div class="container mt-4">		
+    <!--Conteneur de la page-->
+    <div class="container mt-4">
+      <!-- Display coloris -->
+      <h4>Couleurs disponibles</h4>
+      <ul class="size-list">
+        <li
+          class="size-item"
+          th:each="colori: ${coloris}"
+          th:style="'background-color:' + ${colori.hexa} + '!important'"
+        >
+          <form
+            th:action="@{/admin/colori/delete}"
+            method="post"
+            onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette couleur?');"
+          >
+            <input type="hidden" name="id" th:value="${colori.id}" />
 
-        <!-- Display coloris -->
+            <span th:text="${colori.name}"></span>
+            <button class="delete-color-button" type="submit">
+              <svg viewBox="0 0 100 100">
+                <path
+                  d="M10,10 L90,90 M90,10 L10,90"
+                  stroke="#000"
+                  stroke-width="5"
+                />
+              </svg>
+            </button>
+          </form>
+        </li>
+      </ul>
+    </div>
 
+    <div th:replace="fragments/footer :: footer"></div>
 
-      </div>
-
-      <div th:replace="fragments/footer :: footer"></div>
-
-      <script src="/js/splide.min.js"></script>
-      <script src="/js/popper.min.js"></script>
-      <script src="/js/bootstrap.min.js"></script>
-
-    </body>
+    <script src="/js/splide.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+  </body>
 </html>

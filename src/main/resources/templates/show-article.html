@@ -11,16 +11,6 @@
 
     <script src="/js/jquery-3.6.3.min.js"></script>
     <title>WalkingFish</title>
-    <script>
-      $(document).ready(function () {
-        document.getElementById("delete-button").addEventListener("click", function(){
-          if(confirm("Êtes-vous sûr de vouloir supprimer cet article?")){
-            // Redirection vers la page de suppression de l'article
-            window.location.href = "/admin/delete/" + document.getElementById("id").value;
-          }
-        });
-      });
-    </script>
   </head>
   <body>
     <div th:replace="fragments/header :: header"></div>
