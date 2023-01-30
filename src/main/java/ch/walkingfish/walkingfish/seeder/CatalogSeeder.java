@@ -92,7 +92,6 @@ public class CatalogSeeder implements CommandLineRunner {
             }
 
             // Create some pictures
-            Picture picture1 = new Picture("/articlesImages/bonnet_vert1.jpeg", "bonnet_vert1.jpeg", article);
             Picture picture2 = new Picture("/articlesImages/bonnet_vert2.jpeg", "bonnet_vert2.jpeg", article);
             Picture picture3 = new Picture("/articlesImages/bonnet_vert3.png", "bonnet_vert3.png", article);
             Picture picture4 = new Picture("/articlesImages/bonnet_vert4.jpeg", "bonnet_vert4.jpeg", article);
@@ -100,7 +99,6 @@ public class CatalogSeeder implements CommandLineRunner {
             Picture picture6 = new Picture("/articlesImages/bonnet_vert6.png", "bonnet_vert6.png", article);
 
             // Save the pictures
-            catalogService.savePicture(picture1);
             catalogService.savePicture(picture2);
             catalogService.savePicture(picture3);
             catalogService.savePicture(picture4);
@@ -139,7 +137,6 @@ public class CatalogSeeder implements CommandLineRunner {
             Picture picture3 = new Picture("/articlesImages/tshirt_rouge3.jpeg", "tshirt_rouge3.jpeg", article);
             Picture picture4 = new Picture("/articlesImages/tshirt_rouge4.jpeg", "tshirt_rouge4.jpeg", article);
             Picture picture5 = new Picture("/articlesImages/tshirt_rouge5.png", "tshirt_rouge5.png", article);
-            Picture picture6 = new Picture("/articlesImages/tshirt_rouge6.jpeg", "tshirt_rouge6.jpeg", article);
 
             // Save the pictures
             catalogService.savePicture(picture1);
@@ -147,7 +144,6 @@ public class CatalogSeeder implements CommandLineRunner {
             catalogService.savePicture(picture3);
             catalogService.savePicture(picture4);
             catalogService.savePicture(picture5);
-            catalogService.savePicture(picture6);
         }
     }
 }
