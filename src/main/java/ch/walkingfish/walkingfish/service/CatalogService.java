@@ -190,6 +190,11 @@ public class CatalogService {
 		if (optPicture.isPresent()) {
 			Picture picture = optPicture.get();
 
+			// Remove the picture from the article
+			Article article = picture.getArticle();
+			article.getPictures().remove(picture);
+
+			// Delete the picture
 			pictureRepository.delete(picture);
 		} else {
 			throw new Exception("This picture does not exist");
