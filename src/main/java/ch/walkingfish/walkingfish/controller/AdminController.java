@@ -54,33 +54,34 @@ public class AdminController {
     @GetMapping(value = { "/", "" })
     public String showCatalogue(Model model, @RequestParam("search") Optional<String> opt_search,
             @RequestParam("page") Optional<String> opt_page) {
-        Page<Article> articles = null;
-        int currentPage = opt_page.isPresent() ? Integer.parseInt(opt_page.get()) : 1;
-        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
+        // Page<Article> articles = null;
+        // int currentPage = opt_page.isPresent() ? Integer.parseInt(opt_page.get()) : 1;
+        // Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
 
-        if (opt_search.isPresent()) {
-            String search = opt_search.get();
-            articles = catalogService.findPaginatedAndFiltered(pageable, search);
+        // if (opt_search.isPresent()) {
+        //     String search = opt_search.get();
+        //     articles = catalogService.findPaginatedAndFiltered(pageable, search);
 
-            model.addAttribute("search", search); // Used to keep the search term in the search bar
-        } else {
-            articles = catalogService.findPaginated(pageable);
-        }
+        //     model.addAttribute("search", search); // Used to keep the search term in the search bar
+        // } else {
+        //     articles = catalogService.findPaginated(pageable);
+        // }
 
-        int totalPages = articles.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream//
-                    .rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
+        // int totalPages = articles.getTotalPages();
+        // if (totalPages > 0) {
+        //     List<Integer> pageNumbers = IntStream//
+        //             .rangeClosed(1, totalPages)
+        //             .boxed()
+        //             .collect(Collectors.toList());
 
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
+        //     model.addAttribute("pageNumbers", pageNumbers);
+        // }
 
-        model.addAttribute("isAdmin", Boolean.TRUE);
-        model.addAttribute("articles", articles);
+        // model.addAttribute("isAdmin", Boolean.TRUE);
+        // model.addAttribute("articles", articles);
 
-        return "catalogue";
+        // return "catalogue";
+        return "dashboard";
     }
 
     /**

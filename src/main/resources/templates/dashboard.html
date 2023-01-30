@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <link href="/css/compknow.css" rel="stylesheet" type="text/css" />
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/splide.min.css" />
+    <title>WalkingFish</title>
+  </head>
+  <body>
+    <div th:replace="fragments/header :: header"></div>
+
+    <!--Conteneur de la page-->
+    <div class="container mt-4">
+      <div class="dashboard">
+        <a href="/admin/coloris" class="dashboard-btn btn-coloris">
+          <h2>Gestion des coloris</h2>
+        </a>
+        <a href="/admin/create" class="dashboard-btn btn-add-article">
+          <h2>Ajouter un article</h2>
+        </a>
+        <a href="/catalogue" class="dashboard-btn btn-articles">
+          <h2>Gestion des articles</h2>
+        </a>
+        <a href="/logout" class="dashboard-btn btn-logout">
+          <h2>Se déconnecter</h2>
+        </a>
+      </div>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <script src="/js/splide.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+  </body>
+</html>

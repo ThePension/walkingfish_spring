@@ -312,3 +312,44 @@ footer {
   height: 20px;
   margin-left: 10px;
 }
+
+.dashboard {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2em;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.dashboard-btn {
+  padding: 2em 2em;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  margin: 1em 1em;
+}
+
+.dashboard .btn-coloris {
+  color: #31de31;
+  border: 3px solid #31de31;
+  text-decoration: none;
+}
+
+.dashboard .btn-articles {
+  color: rgb(49, 179, 240);
+  border: 3px solid rgb(49, 179, 240);
+  text-decoration: none;
+}
+
+.dashboard .btn-logout {
+  color: #fa0000d7;
+  border: 3px solid #fa0000d7;
+  text-decoration: none;
+}
+
+.dashboard .btn-add-article {
+  color: #bd9c77;
+  border: 3px solid #bd9c77;
+  text-decoration: none;
+}
