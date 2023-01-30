@@ -1,6 +1,7 @@
 package ch.walkingfish.walkingfish.model;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.ArrayList;
 
 import javax.persistence.CascadeType;
@@ -18,6 +19,7 @@ import javax.persistence.PreRemove;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.collection.internal.PersistentList;
 
 @Entity
 public class Article {
@@ -45,13 +47,12 @@ public class Article {
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
-    @JoinTable(name = "article_colori", 
-            joinColumns = {@JoinColumn(name = "article_id")}, 
-            inverseJoinColumns = {@JoinColumn(name = "colori_id")})
+    @JoinTable(name = "article_colori", joinColumns = { @JoinColumn(name = "article_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "colori_id") })
     private List<Colori> coloris;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Picture> pictures;
 
     /**
@@ -89,7 +90,7 @@ public class Article {
         for (Colori colori : coloris) {
             colori.getArticles().remove(this);
         }
-        
+
         this.coloris.clear();
     }
 
@@ -207,11 +208,17 @@ public class Article {
      * @param coloris The coloris of the article
      */
     public void setColoris(ArrayList<Colori> coloris) {
-        this.coloris = coloris;
+        if (this.coloris == null) {
+            this.coloris = new ArrayList<Colori>();
+        }
+
+        this.coloris.clear();
+        this.coloris.addAll(coloris);
     }
 
     /**
      * Add a colori to the article
+     * 
      * @param colori The colori to add
      */
     public void addColori(Colori colori) {
@@ -221,11 +228,11 @@ public class Article {
 
     /**
      * Remove a colori from the article
+     * 
      * @param colori The colori to remove
      */
     public void removeColori(Colori colori) {
         this.coloris.remove(colori);
-        // colori.removeArticle(this);
     }
 
     /**
@@ -251,19 +258,20 @@ public class Article {
      * 
      * @param pictures The pictures of the article
      */
-    public void setPictures(List<Picture> pictures) {
-        this.pictures = pictures;
+    public void setPictures(List<Picture> _pictures) {
+        System.out.println("setPictures");
+
+        if (this.pictures == null) {
+            this.pictures = new ArrayList<Picture>();
+        }
+
+        this.pictures.clear();
+        this.pictures.addAll(_pictures);
     }
 
-    /**
-     * Add a picture to the article
-     * 
-     * @param picture The picture to add
-     */
     @Override
-    public String toString() {
-        return "Article [description=" + description + ", id=" + id + ", name=" + name + ", price=" + price + ", type="
-                + type + "]";
+    public int hashCode() {
+        return (id != null ? id.hashCode() : 0);
     }
 
     /**
@@ -271,15 +279,20 @@ public class Article {
      */
     @Override
     public boolean equals(Object obj) {
-        // Test if other is an instance of Article
-        Article other = (Article) obj;
-
-        if (this == other) {
+        if (this == obj) {
             return true;
         }
 
-        if (!this.id.equals(other.getId())) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
+        }
+
+        Article other = (Article) obj;
+
+        if (this.id != null) {
+            if (!this.id.equals(other.getId())) {
+                return false;
+            }
         }
 
         if (!this.name.equals(other.getName())) {

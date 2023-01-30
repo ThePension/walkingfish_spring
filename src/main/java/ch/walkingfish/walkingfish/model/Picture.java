@@ -113,7 +113,7 @@ public class Picture {
 
     @Override
     public int hashCode() {
-        return Objects.hash(article, id, url);
+        return (id != null ? id.hashCode() : 0);
     }
 
     @Override
@@ -129,15 +129,18 @@ public class Picture {
 
         Picture other = (Picture) obj;
 
-        if (id == null) {
-            if (other.id != null)
+        if (this.id != null)
+        {
+            if (other.id == null)
                 return false;
-        } else if (!id.equals(other.id))
+            else if (!this.id.equals(other.id))
+                return false;
+        }
+
+        if (!this.url.equals(other.getUrl()))
             return false;
-        if (url == null) {
-            if (other.url != null)
-                return false;
-        } else if (!url.equals(other.url))
+
+        if (!this.name.equals(other.getName()))
             return false;
 
         return true;

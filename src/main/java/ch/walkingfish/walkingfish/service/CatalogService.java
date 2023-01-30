@@ -152,29 +152,7 @@ public class CatalogService {
 		Optional<Article> article = articleRepository.findById(id);
 
 		if (article.isPresent()) {
-			// Delete attached pictures
-			// article.get().getPictures().clear();
-
-			// if (pictures != null) {
-			// 	pictures.forEach(p -> pictureRepository.delete(p));
-			// }
-
-			// Remove references to coloris
-			// article.get().getColoris().clear();
-
-			// if (coloris != null) {
-			// 	coloris.stream()//
-			// 			.map(Colori::getArticles)
-			// 			.filter(c -> c != null) //
-			// 			.peek(c -> c.remove(article.get()))
-			// 			.flatMap(Collection::stream)//
-			// 			.peek(this::updateArticleInDB);
-
-				// Save the coloris
-				// coloris.forEach(c -> coloriService.updateColori(c));			
-			// }
-			// Delete the article
-		articleRepository.deleteById(id);
+			articleRepository.deleteById(id);
 		}
 	}
 

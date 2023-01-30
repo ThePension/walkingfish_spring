@@ -139,7 +139,7 @@ public class Colori {
 
     @Override
     public int hashCode() {
-        return Objects.hash(articles, id, name, hexa);
+        return (id != null ? id.hashCode() : 0);
     }
 
     @Override
