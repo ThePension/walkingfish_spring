@@ -208,16 +208,6 @@ public class AdminController {
             }
         }
 
-        // Delete the article from the database
-        for (Picture picture : article.getPictures()) {
-            try {
-                catalogService.deletePictureInDB(picture.getId());
-            } catch (Exception e) {
-                model.addAttribute("errors", "Une erreur est survenue lors de la suppression de l'article");
-                e.printStackTrace();
-            }
-        }
-
         catalogService.deleteArticleInDB(id.longValue());
 
         return "redirect:/admin";
@@ -245,8 +235,6 @@ public class AdminController {
             return "redirect:/admin/show/" + article_id;
         }
 
-        System.out.println("Picture found in the database");
-
         // Delete the picture from the database
         try {
             catalogService.deletePictureInDB(picture_id.longValue());
@@ -255,7 +243,6 @@ public class AdminController {
             e.printStackTrace();
             return "redirect:/admin/show/" + article_id;
         }
-        System.out.println("Picture deleted from the database");
 
         // Delete the picture from the server
         try {
@@ -265,8 +252,6 @@ public class AdminController {
             e.printStackTrace();
             return "redirect:/admin/show/" + article_id;
         }
-
-        System.out.println("Picture deleted from the server");
 
         return "redirect:/admin/show/" + article_id;
     }
