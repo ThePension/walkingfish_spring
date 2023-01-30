@@ -94,6 +94,7 @@ public class AdminController {
         model.addAttribute("isNew", Boolean.TRUE);
         model.addAttribute("isEdit", Boolean.FALSE);
         model.addAttribute("sizes", Article.SIZES);
+        model.addAttribute("coloris", coloriService.getAllColori());
 
         return "new-article";
     }

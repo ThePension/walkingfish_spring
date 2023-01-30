@@ -186,6 +186,23 @@
         </select>
       </div>
 
+      <!-- Add a colori picker -->
+      <div class="form-group">
+        <label for="coloris" th:text="Couleurs"></label>
+        <select
+          class="form-select"
+          th:field="*{coloris}"
+          multiple
+          th:required="required"
+        >
+          <option
+            th:each="colori: ${coloris}"
+            th:value="${colori.id}"
+            th:text="${colori.name}"
+            th:style="'background-color:' + ${colori.hexa} + '!important'"
+          ></option>
+        </select>
+
       <div th:if="${!isEdit}" class="form-group">
         <label for="pictures">Images de l'article:</label>
         <input type="file" id="images" name="images" multiple />
