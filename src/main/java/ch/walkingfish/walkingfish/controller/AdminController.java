@@ -318,6 +318,7 @@ public class AdminController {
         List<Colori> coloris = coloriService.getAllColori();
 
         model.addAttribute("coloris", coloris);
+        model.addAttribute("colori", new Colori());
 
         return "coloris";
     }
@@ -328,6 +329,19 @@ public class AdminController {
             coloriService.deleteColori(id.longValue());
         } catch (Exception e) {
             model.addAttribute("errors", "Une erreur est survenue lors de la suppression du colori");
+            e.printStackTrace();
+            return "redirect:/admin/coloris";
+        }
+
+        return "redirect:/admin/coloris";
+    }
+
+    @PostMapping(value = "/colori/save")
+    public String addColori(@ModelAttribute("colori") Colori colori, Model model) {
+        try {
+            coloriService.addColori(colori);
+        } catch (Exception e) {
+            model.addAttribute("errors", "Une erreur est survenue lors de l'ajout du colori");
             e.printStackTrace();
             return "redirect:/admin/coloris";
         }

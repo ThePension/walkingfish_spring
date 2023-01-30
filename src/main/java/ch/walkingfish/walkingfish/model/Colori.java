@@ -1,18 +1,14 @@
 package ch.walkingfish.walkingfish.model;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.PreRemove;
 
 @Entity
 public class Colori {    
@@ -41,15 +37,6 @@ public class Colori {
     public Colori(String name, String hexa) {
         this.name = name;
         this.hexa = hexa;
-    }
-
-    @PreRemove
-    public void removeReferences() {
-        for (Article article : articles) {
-            article.removeColori(this);
-        }
-
-        this.articles.clear();
     }
 
     /**

@@ -63,21 +63,6 @@ public class ColoriService {
      * @param id the id of the colori
      */
     public void deleteColori(long id) {
-        // Remove all references to this colori
-        Colori colori = getColoriById(id);
-
-        // // Remove all the references
-        // colori.getArticles().forEach(a -> {
-        //     a.removeColori(colori);
-        //     // catalogService.updateArticleInDB(a);
-        //     articleRepository.save(a);
-        // });
-
-        // // Remove all the references
-        // colori.getArticles().clear();
-
-        // updateColori(colori);
-
         coloriRepository.deleteById(id);
     }
 
@@ -105,13 +90,6 @@ public class ColoriService {
      * Delete all the colori
      */
     public void deleteAllColori() {
-        // Get all coloris
-        List<Colori> coloris = new ArrayList<Colori>(getAllColori());
-
-        for (Colori colori : coloris) {
-            deleteColori(colori.getId());
-        }
-
-        // coloriRepository.deleteAll();
+        coloriRepository.deleteAll();
     }
 }

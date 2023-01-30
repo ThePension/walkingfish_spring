@@ -17,7 +17,41 @@
     <!--Conteneur de la page-->
     <div class="container mt-4">
       <!-- Display coloris -->
+      <h4>Ajouter une couleur</h4>
+
+      <form
+        th:action="@{/admin/colori/save}"
+        th:object="${colori}"
+        method="post"
+        class="row mb-4"
+      >
+        <div class="form-group col-lg-5 col-sm-12 mt-2">
+          <label for="name">Nom</label>
+          <input
+            type="text"
+            class="form-control"
+            th:required="required"
+            th:field="*{name}"
+          />
+        </div>
+
+        <div class="form-group col-lg-5 col-sm-12 mt-2">
+          <label for="hexa">Valeur hexadécimale</label>
+          <input
+            type="text"
+            class="form-control"
+            th:required="required"
+            th:field="*{hexa}"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary col-lg-2 mt-2 col-sm-12">
+          Ajouter la couleur
+        </button>
+      </form>
+
       <h4>Couleurs disponibles</h4>
+
       <ul class="size-list">
         <li
           class="size-item"
