@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
     />
     <link href="/css/compknow.css" rel="stylesheet" type="text/css" />
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
 
     <script src="/js/jquery-3.6.3.min.js"></script>
     <title>WalkingFish</title>
@@ -16,9 +16,7 @@
     <div th:replace="fragments/header :: header"></div>
 
     <!--Conteneur de la page-->
-    <div
-      class="container mt-4"
-    >
+    <div class="container mt-4">
       <div th:fragment="show-article">
         <table class="table">
           <thead class="thead-dark">
@@ -42,25 +40,94 @@
           </tbody>
         </table>
 
-        <div th:if="${isAdmin}" class="d-flex justify-content-between mt-5 mb-5">
+        <div
+          th:if="${isAdmin}"
+          class="d-flex justify-content-between mt-5 mb-5"
+        >
           <a th:href="@{/admin/edit/{id}(id=${article.id})}">
             <button type="submit" class="btn btn-info p-3 text-white">
               Modifier l'article
             </button>
           </a>
-            <form
-              action="#"
-              th:action="@{/admin/delete}"
-              th:object="${article}"
-              method="post"
-              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article?');"
-            >
-              <input type="hidden" th:value="${article.id}" name="id" />
-              <button type="submit" class="btn btn-danger p-3">Supprimer</button>
-            </form>
+          <form
+            action="#"
+            th:action="@{/admin/delete}"
+            th:object="${article}"
+            method="post"
+            onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article?');"
+          >
+            <input type="hidden" th:value="${article.id}" name="id" />
+            <button type="submit" class="btn btn-danger p-3">Supprimer</button>
+          </form>
         </div>
 
-        <h1>Images de l'article</h1>
+        <div class="row">
+          <form
+            th:action="@{/admin/article/addColori}"
+            method="post"
+            class="col-lg-6"
+          >
+            <h2>Ajouter une couleur</h2>
+            <input type="hidden" th:value="${article.id}" name="article_id" />
+
+            <!-- Add a color picker -->
+            <div>
+              <select class="form-select" name="coloris_id" multiple th:required="required">
+                <option
+                  th:each="colori: ${coloris}"
+                  th:value="${colori.id}"
+                  th:text="${colori.name}"
+                  th:style="'background-color:' + ${colori.hexa} + '!important'"
+                ></option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-info text-white col-lg-6">
+              Ajouter
+            </button>
+          </form>
+
+          <div class="col-lg-6">
+            <h2>Couleurs disponibles</h2>
+            <ul class="size-list">
+              <li
+                class="size-item"
+                th:each="colori: ${article.coloris}"
+                th:style="'background-color:' + ${colori.hexa} + '!important'"
+              >
+                <form
+                  th:action="@{/admin/article/deleteColori}"
+                  method="post"
+                  onsubmit="return confirm('Êtes-vous sûr de vouloir retirer cette couleur?');"
+                >
+                  <input
+                    type="hidden"
+                    th:value="${colori.id}"
+                    name="colori_id"
+                  />
+                  <input
+                    type="hidden"
+                    th:value="${article.id}"
+                    name="article_id"
+                  />
+
+                  <span th:text="${colori.name}"></span>
+                  <button class="delete-color-button" type="submit">
+                    <svg viewBox="0 0 100 100">
+                      <path
+                        d="M10,10 L90,90 M90,10 L10,90"
+                        stroke="#000"
+                        stroke-width="5"
+                      />
+                    </svg>
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 class="mt-4">Images de l'article</h2>
 
         <div class="add-button-container">
           <form
@@ -116,10 +183,9 @@
 
     <div th:replace="fragments/footer :: footer"></div>
 
-
     <script src="/js/splide.min.js"></script>
-      <script src="/js/popper.min.js"></script>
-      <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <script>
       document.getElementById("images").onchange = function () {
         document.getElementById("addImagesForm").submit();

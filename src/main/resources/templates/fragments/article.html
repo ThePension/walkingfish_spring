@@ -187,7 +187,7 @@
       </div>
 
       <!-- Add a colori picker -->
-      <div class="form-group">
+      <div th:if="${!isEdit}" class="form-group">
         <label for="coloris" th:text="Couleurs"></label>
         <select
           class="form-select"
@@ -202,6 +202,7 @@
             th:style="'background-color:' + ${colori.hexa} + '!important'"
           ></option>
         </select>
+      </div>
 
       <div th:if="${!isEdit}" class="form-group">
         <label for="pictures">Images de l'article:</label>

@@ -1,6 +1,7 @@
 package ch.walkingfish.walkingfish.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,7 +52,8 @@ public class AdminController {
      * @return the view to show
      */
     @GetMapping(value = { "/", "" })
-    public String showCatalogue(Model model, @RequestParam("search") Optional<String> opt_search, @RequestParam("page") Optional<String> opt_page) {
+    public String showCatalogue(Model model, @RequestParam("search") Optional<String> opt_search,
+            @RequestParam("page") Optional<String> opt_page) {
         Page<Article> articles = null;
         int currentPage = opt_page.isPresent() ? Integer.parseInt(opt_page.get()) : 1;
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
@@ -68,10 +70,10 @@ public class AdminController {
         int totalPages = articles.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream//
-                .rangeClosed(1, totalPages)
-                .boxed()
-                .collect(Collectors.toList());
-                
+                    .rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
@@ -119,6 +121,15 @@ public class AdminController {
 
         model.addAttribute("isAdmin", Boolean.TRUE);
 
+        // Add colori that are not in the article
+        List<Colori> coloris = coloriService.getAllColori();
+
+        for (Colori colori : article.getColoris()) {
+            coloris.remove(colori);
+        }
+
+        model.addAttribute("coloris", coloris);
+
         return "show-article";
     }
 
@@ -137,7 +148,7 @@ public class AdminController {
 
         // Save the images to the server
         for (MultipartFile image : images) {
-            if (image.getOriginalFilename()!= null && image.getOriginalFilename() != ""){
+            if (image.getOriginalFilename() != null && image.getOriginalFilename() != "") {
                 try {
                     String imageName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
 
@@ -176,6 +187,7 @@ public class AdminController {
         model.addAttribute("isNew", Boolean.FALSE);
         model.addAttribute("isEdit", Boolean.TRUE);
         model.addAttribute("sizes", Article.SIZES);
+        model.addAttribute("coloris", coloriService.getAllColori());
 
         return "new-article";
     }
@@ -314,7 +326,7 @@ public class AdminController {
         return "redirect:/admin/show/" + article_id;
     }
 
-    @GetMapping(value = {"/coloris", "/coloris/"})
+    @GetMapping(value = { "/coloris", "/coloris/" })
     public String showColoris(Model model) {
         List<Colori> coloris = coloriService.getAllColori();
 
@@ -348,5 +360,89 @@ public class AdminController {
         }
 
         return "redirect:/admin/coloris";
+    }
+
+    // article/deleteColori
+    @PostMapping(value = "/article/deleteColori")
+    public String removeColoriFromArticle(@ModelAttribute("colori_id") Integer colori_id,
+            @ModelAttribute("article_id") Integer article_id, Model model) {
+        // Get the article from the database
+        Article article;
+
+        try {
+            article = catalogService.getArticleById(article_id.longValue());
+        } catch (Exception e) {
+            model.addAttribute("errors", "Une erreur est survenue lors de la suppression du colori de l'article");
+            e.printStackTrace();
+            return "redirect:/admin/show/" + article_id;
+        }
+
+        // Get the colori from the database
+        Colori colori;
+
+        try {
+            colori = coloriService.getColoriById(colori_id.longValue());
+        } catch (Exception e) {
+            model.addAttribute("errors", "Une erreur est survenue lors de la suppression du colori de l'article");
+            e.printStackTrace();
+            return "redirect:/admin/show/" + article_id;
+        }
+
+        // Remove the colori from the article
+        try {
+            article.removeColori(colori);
+            catalogService.updateArticleInDB(article);
+        } catch (Exception e) {
+            model.addAttribute("errors", "Une erreur est survenue lors de la suppression du colori de l'article");
+            e.printStackTrace();
+            return "redirect:/admin/show/" + article_id;
+        }
+
+        return "redirect:/admin/show/" + article_id;
+    }
+
+    @PostMapping(value = "/article/addColori")
+    public String addColorToArticle(@ModelAttribute("article_id") Integer article_id,
+        @RequestParam List<Integer> coloris_id, Model model) {
+        System.out.println("Coloris : " + coloris_id);
+        // Get the article from the database
+        Article article;
+
+        try {
+            article = catalogService.getArticleById(article_id.longValue());
+        } catch (Exception e) {
+            model.addAttribute("errors", "Une erreur est survenue lors de l'ajout d'image(s) à l'article");
+            e.printStackTrace();
+            return "redirect:/admin/show/" + article_id;
+        }
+
+        // Get the colori from the database
+        List<Colori> coloris = new ArrayList<Colori>();
+
+        for (Integer colori_id : coloris_id) {
+            try {
+                coloris.add(coloriService.getColoriById(colori_id.longValue()));
+            } catch (Exception e) {
+                model.addAttribute("errors", "Une erreur est survenue lors de l'ajout d'image(s) à l'article");
+                e.printStackTrace();
+                return "redirect:/admin/show/" + article_id;
+            }
+        }
+
+        // Add the coloris to the article
+        for (Colori coloriToAdd : coloris) {
+            article.addColori(coloriToAdd);
+        }
+
+        // Save the article in the database
+        try {
+            catalogService.updateArticleInDB(article);
+        } catch (Exception e) {
+            model.addAttribute("errors", "Une erreur est survenue lors de l'ajout d'image(s) à l'article");
+            e.printStackTrace();
+            return "redirect:/admin/show/" + article_id;
+        }
+
+        return "redirect:/admin/show/" + article_id;
     }
 }
