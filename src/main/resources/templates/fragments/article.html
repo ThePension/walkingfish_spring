@@ -81,11 +81,12 @@
           <!-- Display coloris -->
           <div class="article-component">
             <h4>Couleurs disponibles</h4>
-            <ul class="color-list">
+            <ul class="size-list">
               <li
-                class="color-item"
-                th:each="color: ${article.coloris}"
-                th:style="'background-color: ' + ${color.hexa}"
+                class="size-item"
+                th:each="colori: ${article.coloris}"
+                th:text="${colori.name}"
+                th:style="'background-color:' + ${colori.hexa} + '!important'"
               ></li>
             </ul>
           </div>

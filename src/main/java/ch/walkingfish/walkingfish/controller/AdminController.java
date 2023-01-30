@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import ch.walkingfish.walkingfish.model.Article;
+import ch.walkingfish.walkingfish.model.Colori;
 import ch.walkingfish.walkingfish.model.Picture;
 import ch.walkingfish.walkingfish.service.CatalogService;
+import ch.walkingfish.walkingfish.service.ColoriService;
 import ch.walkingfish.walkingfish.service.FileStorageService;
 
 import org.springframework.ui.Model;
@@ -36,6 +38,9 @@ public class AdminController {
 
     @Autowired
     FileStorageService fileStorageService;
+
+    @Autowired
+    ColoriService coloriService;
 
     private final int pageSize = 4;
 
@@ -306,5 +311,14 @@ public class AdminController {
             }
         }
         return "redirect:/admin/show/" + article_id;
+    }
+
+    @GetMapping(value = {"/coloris", "/coloris/"})
+    public String showColoris(Model model) {
+        List<Colori> coloris = coloriService.getAllColori();
+
+        model.addAttribute("coloris", coloris);
+
+        return "coloris";
     }
 }
